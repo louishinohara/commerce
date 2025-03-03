@@ -6,9 +6,9 @@ import {
 import { isShopifyError } from 'lib/type-guards';
 import { ensureStartsWith } from 'lib/utils';
 import {
-  revalidateTag,
+  unstable_cacheLife as cacheLife,
   unstable_cacheTag as cacheTag,
-  unstable_cacheLife as cacheLife
+  revalidateTag
 } from 'next/cache';
 import { cookies, headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
@@ -26,6 +26,7 @@ import {
 } from './queries/collection';
 import { getMenuQuery } from './queries/menu';
 import { getPageQuery, getPagesQuery } from './queries/page';
+import { GET_ALL_POLICIES_QUERY, getPolicyQuery } from './queries/policies';
 import {
   getProductQuery,
   getProductRecommendationsQuery,
@@ -498,4 +499,56 @@ export async function revalidate(req: NextRequest): Promise<NextResponse> {
   }
 
   return NextResponse.json({ status: 200, revalidated: true, now: Date.now() });
+}
+
+type Policy = {
+  title: string;
+  body: string;
+  handle: string;
+};
+
+type PolicyResponse = {
+  shop: {
+    privacyPolicy?: Policy;
+    termsOfService?: Policy;
+    refundPolicy?: Policy;
+  };
+};
+
+export async function getPolicy(handle: string): Promise<Policy | undefined> {
+  "use cache";
+  cacheTag("policies");
+  cacheLife("days");
+
+  const res = await shopifyFetch<PolicyResponse>({
+    query: getPolicyQuery,
+    variables: { handle } as ExtractVariables<PolicyResponse>, // Ensure variables are properly typed
+  });
+
+  // Dynamically access the correct policy
+  return (
+    res.body.shop.privacyPolicy ??
+    res.body.shop.termsOfService ??
+    res.body.shop.refundPolicy
+  );
+}
+
+export async function getAllPolicies(): Promise<Policy[]> {
+  "use cache";
+  cacheTag("policies");
+  cacheLife("days");
+
+  const res = await shopifyFetch<PolicyResponse>({
+    query: GET_ALL_POLICIES_QUERY,
+  });
+
+  console.log("Shopify API Response:", res); // ✅ Debugging output
+
+  // Ensure res.body.data.shop exists before accessing it
+  if (!res?.body?.data?.shop) {
+    console.error("Error fetching policies. Response:", res);
+    return []; // Return an empty array instead of crashing
+  }
+
+  return Object.values(res.body.data.shop).filter(Boolean) as Policy[];
 }

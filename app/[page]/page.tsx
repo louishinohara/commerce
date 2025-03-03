@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 
+import Footer from 'components/layout/footer';
 import Prose from 'components/prose';
 import { getPage } from 'lib/shopify';
 import { notFound } from 'next/navigation';
@@ -40,6 +41,7 @@ export default async function Page(props: { params: Promise<{ page: string }> })
           day: 'numeric'
         }).format(new Date(page.updatedAt))}.`}
       </p>
+      <Footer />
     </>
   );
 }
