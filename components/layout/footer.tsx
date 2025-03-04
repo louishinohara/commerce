@@ -1,76 +1,130 @@
-import Link from 'next/link';
+// import FooterMenu from 'components/layout/footer-menu';
+// import LogoSquare from 'components/logo-square';
+// import { getMenu } from 'lib/shopify';
+// import Link from 'next/link';
+// import { notFound } from 'next/navigation';
+// import { Suspense } from 'react';
 
-import FooterMenu from 'components/layout/footer-menu';
-import LogoSquare from 'components/logo-square';
-import { getMenu } from 'lib/shopify';
-import { Suspense } from 'react';
+// // Replace these placeholders with your own icon components or library icons.
+// function InstagramIcon() {
+//   return <span className="inline-block w-5 h-5 bg-gray-300">IG</span>;
+// }
+// function TwitterIcon() {
+//   return <span className="inline-block w-5 h-5 bg-gray-300">TW</span>;
+// }
+// function FacebookIcon() {
+//   return <span className="inline-block w-5 h-5 bg-gray-300">FB</span>;
+// }
 
-const { COMPANY_NAME, SITE_NAME } = process.env;
+// const { COMPANY_NAME, SITE_NAME } = process.env;
 
-export default async function Footer() {
-  const currentYear = new Date().getFullYear();
-  const copyrightDate = 2023 + (currentYear > 2023 ? `-${currentYear}` : '');
-  const skeleton = 'w-full h-6 animate-pulse rounded-sm bg-neutral-200 dark:bg-neutral-700';
-  const footer = await getMenu('footer');
-  const aboutUs = await getMenu('about-us');
-  const helpCenter = await getMenu('help-center');
+// export default async function Footer() {
+//   const currentYear = new Date().getFullYear();
+//   const startYear = 2023; // The first year you started using this brand
+//   const displayYear = startYear === currentYear ? currentYear : `${startYear}-${currentYear}`;
 
-  const menu = [...footer, ...aboutUs, ...helpCenter];
-  // const menu = footer + aboutUs + helpCenter;
-  const copyrightName = COMPANY_NAME || SITE_NAME || '';
+//   // Fetch each menu separately
+//   const footerMenu = await getMenu('footer');
+//   const aboutUsMenu = await getMenu('about-us');
+//   const helpCenterMenu = await getMenu('help-center');
 
-  return (
-    <footer className="text-sm text-neutral-500 dark:text-neutral-400">
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 border-t border-neutral-200 px-6 py-12 text-sm md:flex-row md:gap-12 md:px-4 min-[1320px]:px-0 dark:border-neutral-700">
-        <div>
-          <Link className="flex items-center gap-2 text-black md:pt-1 dark:text-white" href="/">
-            <LogoSquare size="sm" />
-            <span className="uppercase">{SITE_NAME}</span>
-          </Link>
-        </div>
-        <Suspense
-          fallback={
-            <div className="flex h-[188px] w-[200px] flex-col gap-2">
-              <div className={skeleton} />
-              <div className={skeleton} />
-              <div className={skeleton} />
-              <div className={skeleton} />
-              <div className={skeleton} />
-              <div className={skeleton} />
-            </div>
-          }
-        >
-          <FooterMenu menu={menu} />
-        </Suspense>
-        <div className="md:ml-auto">
-          <a
-            className="flex h-8 w-max flex-none items-center justify-center rounded-md border border-neutral-200 bg-white text-xs text-black dark:border-neutral-700 dark:bg-black dark:text-white"
-            aria-label="Deploy on Vercel"
-            href="https://vercel.com/templates/next.js/nextjs-commerce"
-          >
-            <span className="px-3">▲</span>
-            <hr className="h-full border-r border-neutral-200 dark:border-neutral-700" />
-            <span className="px-3">Deploy</span>
-          </a>
-        </div>
-      </div>
-      <div className="border-t border-neutral-200 py-6 text-sm dark:border-neutral-700">
-        <div className="mx-auto flex w-full max-w-7xl flex-col items-center gap-1 px-4 md:flex-row md:gap-0 md:px-4 min-[1320px]:px-0">
-          <p>
-            &copy; {copyrightDate} {copyrightName}
-            {copyrightName.length && !copyrightName.endsWith('.') ? '.' : ''} All rights reserved.
-          </p>
-          <hr className="mx-4 hidden h-4 w-[1px] border-l border-neutral-400 md:inline-block" />
-          <p>
-            <a href="https://github.com/vercel/commerce">View the source</a>
-          </p>
-          <p className="md:ml-auto">
-            <a href="https://vercel.com" className="text-black dark:text-white">
-              Created by ▲ Vercel
-            </a>
-          </p>
-        </div>
-      </div>
-    </footer>
-  );
-}
+//   // If any menu fails to load, you could return notFound() or handle gracefully
+//   if (!footerMenu || !aboutUsMenu || !helpCenterMenu) {
+//     return notFound();
+//   }
+
+//   // You can rename these columns however you like
+//   const columns = [
+//     { title: 'About Us', menu: aboutUsMenu },
+//     { title: 'Policies', menu: footerMenu },
+//     { title: 'Help Center', menu: helpCenterMenu },
+//   ];
+
+//   return (
+//     <footer className="bg-black text-white">
+//       {/* Upper section: Logo + Subscribe + Menu columns */}
+//       <div className="mx-auto max-w-7xl px-6 py-12 md:px-4 lg:px-8">
+//         <div className="flex flex-col gap-12 md:flex-row">
+//           {/* Left Column: Logo & Subscribe */}
+//           <div className="md:w-1/3">
+//             {/* Logo/Brand */}
+//             <Link href="/" className="flex items-center gap-2 text-white">
+//               <LogoSquare size="sm" />
+//               <span className="uppercase font-bold">{SITE_NAME}</span>
+//             </Link>
+
+//             {/* Subscribe Form */}
+//             <div className="mt-6">
+//               <h2 className="mb-2 text-lg font-semibold">Subscribe For Exclusive Deals!</h2>
+//               <form className="flex">
+//                 <input
+//                   type="email"
+//                   placeholder="Email"
+//                   className="w-full rounded-l-md p-2 text-black focus:outline-none"
+//                 />
+//                 <button
+//                   type="submit"
+//                   className="rounded-r-md bg-white px-4 py-2 text-black hover:bg-gray-200"
+//                 >
+//                   Subscribe
+//                 </button>
+//               </form>
+//             </div>
+//           </div>
+
+//           {/* Middle Columns: Each menu in its own column */}
+//           <div className="flex flex-col gap-8 md:flex-row md:w-2/3">
+//             {columns.map((col) => (
+//               <div key={col.title} className="w-full md:w-1/3">
+//                 <h3 className="mb-4 text-base font-semibold uppercase tracking-wide">
+//                   {col.title}
+//                 </h3>
+//                 <Suspense fallback={<div className="h-6 w-24 animate-pulse bg-gray-400" />}>
+//                   <FooterMenu menu={col.menu} />
+//                 </Suspense>
+//               </div>
+//             ))}
+//           </div>
+//         </div>
+
+//         {/* Social Media Icons */}
+//         <div className="mt-8 flex items-center gap-4">
+//           <a
+//             href="#"
+//             aria-label="Instagram"
+//             className="hover:text-gray-300"
+//           >
+//             <InstagramIcon />
+//           </a>
+//           <a
+//             href="#"
+//             aria-label="Twitter"
+//             className="hover:text-gray-300"
+//           >
+//             <TwitterIcon />
+//           </a>
+//           <a
+//             href="#"
+//             aria-label="Facebook"
+//             className="hover:text-gray-300"
+//           >
+//             <FacebookIcon />
+//           </a>
+//         </div>
+//       </div>
+
+//       {/* Lower section: Copyright and maybe additional links */}
+//       <div className="border-t border-gray-700 py-6 text-sm">
+//         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-6 md:flex-row lg:px-8">
+//           <p>
+//             &copy; {displayYear}{' '}
+//             {COMPANY_NAME || SITE_NAME || ''}
+//             . All rights reserved.
+//           </p>
+//           {/* Additional link or text if you want */}
+//           <p className="text-gray-400">Last Updated: {new Date().toLocaleDateString()}</p>
+//         </div>
+//       </div>
+//     </footer>
+//   );
+// }

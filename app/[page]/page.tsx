@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import Footer from 'components/layout/footer';
+import Footer from 'components/layout/footer/Footer';
 import Prose from 'components/prose';
 import { getPage } from 'lib/shopify';
 import { notFound } from 'next/navigation';

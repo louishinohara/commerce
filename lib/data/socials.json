@@ -1,0 +1,17 @@
+[
+  {
+    "name": "TikTok",
+    "icon": "FaTiktok",
+    "url": "https://tiktok.com"
+  },
+  {
+    "name": "Instagram",
+    "icon": "FaInstagram",
+    "url": "https://www.instagram.com"
+  },
+  {
+    "name": "Facebook",
+    "icon": "FaFacebookF",
+    "url": "https://www.facebook.com"
+  }
+]
