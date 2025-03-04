@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import FooterBottomSection from './FooterBottomSection';
 import FooterTopSection from './FooterTopSection';
 
-const { COMPANY_NAME, SITE_NAME } = process.env;
+const { NEXT_PUBLIC_COMPANY_NAME, SITE_NAME } = process.env;
 
 export default async function Footer() {
   const currentYear = new Date().getFullYear();
@@ -32,7 +32,7 @@ export default async function Footer() {
 
       {/* Bottom portion of the footer: copyright */}
       <FooterBottomSection
-        companyName={COMPANY_NAME || SITE_NAME || ''}
+        companyName={NEXT_PUBLIC_COMPANY_NAME || SITE_NAME || ''}
         displayYear={currentYear}
       />
     </footer>
