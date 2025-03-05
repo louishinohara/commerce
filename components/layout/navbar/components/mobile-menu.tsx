@@ -32,13 +32,15 @@ export default function MobileMenu({ menu }: { menu: Menu[] }) {
 
   return (
     <>
+      {/* Menu Toggle Button (Aligned Further Left & One Size Bigger) */}
       <button
         onClick={openMobileMenu}
         aria-label="Open mobile menu"
-        className="flex h-11 w-11 items-center justify-center rounded-md border border-neutral-200 text-black transition-colors md:hidden dark:border-neutral-700 dark:text-white"
+        className="relative flex h-11 w-11 items-center justify-start text-black transition-colors dark:text-white"
       >
-        <Bars3Icon className="h-4" />
+        <Bars3Icon className="h-6 w-6" />
       </button>
+
       <Transition show={isOpen}>
         <Dialog onClose={closeMobileMenu} className="relative z-50">
           <Transition.Child
@@ -63,12 +65,13 @@ export default function MobileMenu({ menu }: { menu: Menu[] }) {
           >
             <Dialog.Panel className="fixed bottom-0 left-0 right-0 top-0 flex h-full w-full flex-col bg-white pb-6 dark:bg-black">
               <div className="p-4">
+                {/* Close Button (No Border, Consistent Alignment & One Size Bigger) */}
                 <button
-                  className="mb-4 flex h-11 w-11 items-center justify-center rounded-md border border-neutral-200 text-black transition-colors dark:border-neutral-700 dark:text-white"
+                  className="mb-4 flex h-11 w-11 items-center justify-center text-black transition-colors dark:text-white"
                   onClick={closeMobileMenu}
                   aria-label="Close mobile menu"
                 >
-                  <XMarkIcon className="h-6" />
+                  <XMarkIcon className="h-6 w-6" />
                 </button>
 
                 <div className="mb-4 w-full">
