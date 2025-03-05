@@ -28,7 +28,7 @@ export default function FooterLogoAndSubscribe() {
   };
 
   return (
-    <div className="w-full px-4">
+    <div className="w-full">
       <div className="flex flex-col items-center md:items-start text-center md:text-left w-full">
         {/* Company Name */}
         <Link href="/" className="flex items-center gap-2">

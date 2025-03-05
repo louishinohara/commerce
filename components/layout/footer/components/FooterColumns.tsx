@@ -7,7 +7,7 @@ export default function FooterColumns({
   columns: { title: string; menu: { title: string; path: string }[] }[];
 }) {
   return (
-    <div className="flex flex-col md:flex-row md:justify-end gap-6 md:gap-10 items-center md:items-start text-center md:text-left px-4">
+    <div className="flex flex-col md:flex-row md:justify-end gap-6 md:gap-10 items-center md:items-start text-center md:text-left">
       {columns.map((col) => (
         <div
           key={col.title}
