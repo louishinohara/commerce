@@ -1,79 +1,92 @@
 "use client";
 
-import CartModal from "components/cart/modal";
+import { Bars3Icon } from "@heroicons/react/24/outline";
+import LogoSquare from "components/logo-square";
+import dynamic from "next/dynamic";
 import Link from "next/link";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Search from "./Search";
-import SearchSkeleton from "./SearchSkeleton";
 import MobileMenu from "./mobile-menu";
 
+// Lazy load CartModal to improve performance
+const CartModal = dynamic(() => import("components/cart/modal"), { ssr: false });
+
 export default function NavbarClient({ menu, companyName }: { menu: any; companyName: string }) {
-  const [visible, setVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+    const [visible, setVisible] = useState(true);
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+    const [hydrated, setHydrated] = useState(false);
+    const lastScrollY = useRef(0); // Use ref to prevent unnecessary re-renders
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > lastScrollY && window.scrollY > 50) {
-        setVisible(false);
-      } else {
-        setVisible(true);
-      }
-      setLastScrollY(window.scrollY);
-    };
+    // Handle Navbar Visibility on Scroll
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > lastScrollY.current && window.scrollY > 50) {
+                setVisible(false);
+            } else {
+                setVisible(true);
+            }
+            lastScrollY.current = window.scrollY;
+        };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
-  return (
-    <nav
-      className={`fixed top-0 left-0 w-full bg-white dark:bg-neutral-900 z-50 shadow-md border-b border-neutral-200 dark:border-neutral-700 transition-transform duration-300 ${
-        visible ? "translate-y-0" : "-translate-y-full"
-      }`}
-    >
-      <div className="py-2 lg:py-3 px-4 lg:px-6">
-        {/* Mobile Layout */}
-        <div className="flex md:hidden items-center justify-between">
-          <div className="flex items-center justify-start w-10">
-            <Suspense fallback={null}>
-              <MobileMenu menu={menu} />
-            </Suspense>
-          </div>
+    // Detect if the screen is mobile
+    useEffect(() => {
+        const checkScreenSize = () => setIsMobile(window.innerWidth < 768);
+        checkScreenSize();
+        window.addEventListener("resize", checkScreenSize);
 
-          <div className="flex-grow flex justify-center">
-            <span className="text-sm font-medium uppercase tracking-widest">
-              {companyName}
-            </span>
-          </div>
+        setTimeout(() => setHydrated(true), 150);
+        return () => window.removeEventListener("resize", checkScreenSize);
+    }, []);
 
-          <div className="flex items-center justify-end w-10">
-            <CartModal />
-          </div>
-        </div>
+    return (
+        <nav
+            className={`fixed top-0 left-0 w-full bg-white dark:bg-neutral-900 z-50 
+            shadow-[0px_4px_10px_rgba(0,0,0,0.06)] dark:shadow-[0px_4px_10px_rgba(255,255,255,0.06)]
+            transition-transform duration-300
+            ${visible ? "translate-y-0" : "-translate-y-full"}`}
+        >
+            <div className="py-2 lg:py-3 px-4 lg:px-6 flex items-center justify-between">
+                {/* Left: Hamburger Menu (Mobile) or Logo (Desktop) */}
+                <div className="relative w-10 h-10 flex items-center">
+                    {isMobile ? (
+                        <button onClick={() => setMenuOpen(true)} className="transition-transform duration-300 ease-in-out hover:scale-110">
+                            <Bars3Icon className="h-6 w-6 text-black dark:text-white" />
+                        </button>
+                    ) : (
+                        <Link href="/" prefetch={true} className="flex items-center gap-2">
+                            <LogoSquare />
+                        </Link>
+                    )}
+                </div>
 
-        {/* Desktop Layout */}
-        <div className="hidden md:block">
-          <div className="grid grid-cols-3 items-center">
-            <div className="flex items-center">
-              <Link href="/" prefetch={true} className="flex items-center gap-2">
-              </Link>
+                {/* Mobile View: Left-Aligned Company Name */}
+                <div className="md:hidden flex-grow flex items-center justify-start pl-4">
+                    <span className="text-base font-medium uppercase tracking-wider whitespace-nowrap overflow-hidden text-ellipsis">
+                        {companyName}
+                    </span>
+                </div>
+
+                {/* Desktop View: Centered Company Name */}
+                <div className="hidden md:flex absolute left-1/2 -translate-x-1/2">
+                    <span className="text-xl font-medium uppercase tracking-widest whitespace-nowrap overflow-hidden text-ellipsis">
+                        {companyName}
+                    </span>
+                </div>
+
+                {/* Right: Search & Cart */}
+                <div className="flex items-center gap-2 justify-end w-full">
+                    <Search isMobile={isMobile} />
+                    <CartModal />
+                </div>
             </div>
 
-            <div className="flex justify-center">
-              <span className="text-sm font-medium uppercase tracking-widest">
-                {companyName}
-              </span>
-            </div>
-
-            <div className="flex items-center justify-end gap-4">
-              <Suspense fallback={<SearchSkeleton />}>
-                <Search />
-              </Suspense>
-              <CartModal />
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav>
-  );
+            {/* Mobile Menu */}
+            {isMobile && <MobileMenu menu={menu} isOpen={menuOpen} setIsOpen={setMenuOpen} />}
+        </nav>
+    );
 }

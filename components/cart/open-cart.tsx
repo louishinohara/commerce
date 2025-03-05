@@ -9,7 +9,7 @@ export default function OpenCart({
   quantity?: number;
 }) {
   return (
-    <div className="relative flex h-10 w-10 items-center justify-end text-black transition-colors dark:text-white">
+    <div className="relative flex h-10 w-10 items-center justify-center text-black transition-colors dark:text-white cursor-pointer">
       {/* Shopping Bag Icon (Aligned to the Right) */}
       <ShoppingBagIcon
         className={clsx('h-5 w-5 transition-all ease-in-out hover:scale-110', className)}
