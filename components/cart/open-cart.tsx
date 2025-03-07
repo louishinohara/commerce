@@ -1,26 +1,25 @@
-import { ShoppingBagIcon } from '@heroicons/react/24/outline';
-import clsx from 'clsx';
+import { ShoppingBagOutlined } from "@mui/icons-material";
+import { Badge, IconButton } from "@mui/material";
 
 export default function OpenCart({
   className,
-  quantity
+  quantity = 0,
+  onClick,
 }: {
   className?: string;
   quantity?: number;
+  onClick: () => void;
 }) {
   return (
-    <div className="relative flex h-10 w-10 items-center justify-center text-black transition-colors dark:text-white cursor-pointer">
-      {/* Shopping Bag Icon (Aligned to the Right) */}
-      <ShoppingBagIcon
-        className={clsx('h-5 w-5 transition-all ease-in-out hover:scale-110', className)}
-      />
-
-      {/* Quantity Badge */}
-      {quantity ? (
-        <div className="absolute right-0 top-0 -mr-1 -mt-1 flex h-4 w-4 items-center justify-center rounded-full bg-blue-600 text-[10px] font-medium text-white">
-          {quantity}
-        </div>
-      ) : null}
-    </div>
+    <IconButton onClick={onClick} size="small" className={className} aria-label="Open cart">
+      <Badge
+        badgeContent={quantity > 0 ? quantity : null}
+        color="primary"
+        overlap="circular"
+        sx={{ "& .MuiBadge-badge": { fontSize: "10px", minWidth: "16px", height: "16px" } }}
+      >
+        <ShoppingBagOutlined fontSize="small" />
+      </Badge>
+    </IconButton>
   );
 }

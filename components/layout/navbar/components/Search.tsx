@@ -1,81 +1,132 @@
 "use client";
 
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import clsx from "clsx";
-import Form from "next/form";
-import { useSearchParams } from "next/navigation";
+import { Close as CloseIcon, Search as SearchIcon } from "@mui/icons-material";
+import { Box, IconButton, InputBase, useTheme } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
+
+interface SearchProps {
+  alwaysExpanded?: boolean;
+  autoFocus?: boolean;
+  isMobile?: boolean;
+  setMenuOpen?: (open: boolean) => void;
+}
 
 export default function Search({
   alwaysExpanded = false,
   autoFocus = false,
-  hideIcon = false,
-  isMobile = false
-}: {
-  alwaysExpanded?: boolean;
-  autoFocus?: boolean;
-  hideIcon?: boolean;
-  isMobile?: boolean;
-}) {
-  const searchParams = useSearchParams();
+  isMobile = false,
+  setMenuOpen = () => {},
+}: SearchProps) {
+  const theme = useTheme();
   const [expanded, setExpanded] = useState(alwaysExpanded);
   const inputRef = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  // Auto-focus when the search bar expands
   useEffect(() => {
     if ((expanded || autoFocus) && inputRef.current) {
       inputRef.current.focus();
     }
   }, [expanded, autoFocus]);
 
-  // Close search when clicking outside (only if not alwaysExpanded and icon is visible)
   useEffect(() => {
-    if (alwaysExpanded || hideIcon) return;
+    if (alwaysExpanded || !expanded) return;
 
-    function handleClickOutside(event: MouseEvent) {
-      if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
         setExpanded(false);
       }
-    }
+    };
 
-    if (expanded) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
+    document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [expanded, alwaysExpanded, hideIcon]);
+  }, [expanded, alwaysExpanded]);
+
+  const handleOnClick = () => {
+    if (isMobile) {
+      setMenuOpen(true);
+    } else {
+      setExpanded((prev) => !prev);
+    }
+  }
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Escape" && !alwaysExpanded) {
+      setExpanded(false);
+    }
+  };
+
+  const isExpanded = expanded || alwaysExpanded;
 
   return (
-    <Form action="/search" className="relative flex w-full max-w-[180px] transition-all duration-300">
-      <div className="flex items-center justify-end w-full relative">
-        {/* Search Input (Only Exists When Expanded) */}
-        {expanded && (
-          <input
-            ref={inputRef}
-            key={searchParams?.get("q")}
-            type="text"
-            name="q"
-            placeholder="Search..."
-            autoComplete="off"
-            defaultValue={searchParams?.get("q") || ""}
-            className="text-md w-40 px-3 py-1 bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-600 rounded-full focus:ring-2 focus:ring-neutral-400 dark:focus:ring-neutral-500 focus:outline-none transition-all duration-300"
-            onBlur={() => setExpanded(false)}
-          />
-        )}
+    <Box
+      ref={containerRef}
+      sx={{
+        position: "relative",
+        display: "flex",
+        alignItems: "center",
+        width: isExpanded ? (isMobile ? "100%" : 240) : 40,
+        height: 36,
+        borderRadius: "18px",
+        border: isExpanded ? `1px solid ${theme.palette.divider}` : "none",
+        backgroundColor: isExpanded ? theme.palette.background.paper : "transparent",
+        ...(isExpanded && {
+          backdropFilter: "blur(4px)",
+          backgroundColor: theme.palette.mode === "dark" 
+            ? "rgba(30, 30, 30, 0.8)" 
+            : "rgba(255, 255, 255, 0.8)",
+        }),
+        transition: "all 0.3s ease-in-out",
+        overflow: "hidden",
+      }}
+      onKeyDown={handleKeyDown}
+    >
+      <InputBase
+        inputRef={inputRef}
+        placeholder="Search..."
+        sx={{
+          flex: 1,
+          ml: 1,
+          fontSize: "0.875rem",
+          color: theme.palette.text.primary,
+          transition: "opacity 0.2s ease-in-out",
+          opacity: isExpanded ? 1 : 0,
+          width: isExpanded ? "100%" : 0,
+          "& .MuiInputBase-input": {
+            padding: "0 8px",
+            border: "none", // Explicitly remove any border
+            backgroundColor: "transparent", // Ensure no background
+            "&::placeholder": {
+              color: theme.palette.text.secondary,
+              opacity: 0.7,
+            },
+            "&:focus": {
+              outline: "none", // Remove default focus outline
+              boxShadow: "none", // Remove any shadow
+              border: "none", // Ensure no border on focus
+            },
+          },
+        }}
+        inputProps={{
+          "aria-label": "search",
+          disabled: !isExpanded,
+        }}
+      />
 
-        {/* Search Icon (Forces Right Alignment) */}
-        <button
-          type="button"
-          onClick={() => setExpanded((prev) => !prev)}
-          className={`cursor-pointer flex items-center justify-end w-10 h-10 rounded-full ml-auto transition-all duration-300 ${expanded
-            ? "bg-neutral-900 hover:bg-neutral-800 dark:bg-neutral-800 dark:hover:bg-neutral-700"
-            : "bg-transparent"
-            }`}
-        >
-          <MagnifyingGlassIcon
-            className={clsx('h-5 w-5 transition-all ease-in-out hover:scale-110')}
-          />
-        </button>
-      </div>
-    </Form>
+      <IconButton
+        onClick={() => handleOnClick()}
+        size="small"
+        sx={{
+          transition: "transform 0.2s ease-in-out",
+          "&:hover": { transform: "scale(1.1)" },
+        }}
+        aria-label={isExpanded ? "Close search" : "Open search"}
+      >
+        {isExpanded ? (
+          <CloseIcon fontSize="small" />
+        ) : (
+          <SearchIcon fontSize="small" />
+        )}
+      </IconButton>
+    </Box>
   );
 }

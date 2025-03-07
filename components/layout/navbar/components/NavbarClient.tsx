@@ -1,32 +1,32 @@
 "use client";
 
-import { Bars3Icon } from "@heroicons/react/24/outline";
+import { Menu as MenuIcon } from "@mui/icons-material";
+import { AppBar, Box, IconButton, Toolbar, Typography, useTheme } from "@mui/material";
 import LogoSquare from "components/logo-square";
+import ThemeToggle from "components/theme/ThemeToggle";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import { useThemeMode } from "theme/useThemeMode";
+import MobileMenu from "./MobileMenu";
 import Search from "./Search";
-import MobileMenu from "./mobile-menu";
 
-// Lazy load CartModal to improve performance
+// Lazy load CartModal
 const CartModal = dynamic(() => import("components/cart/modal"), { ssr: false });
 
 export default function NavbarClient({ menu, companyName }: { menu: any; companyName: string }) {
     const [visible, setVisible] = useState(true);
     const [menuOpen, setMenuOpen] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
-    const [hydrated, setHydrated] = useState(false);
-    const lastScrollY = useRef(0); // Use ref to prevent unnecessary re-renders
+    const theme = useTheme();
+    const isDarkMode = useThemeMode();
 
     // Handle Navbar Visibility on Scroll
     useEffect(() => {
+        if (typeof window === "undefined") return;
+
         const handleScroll = () => {
-            if (window.scrollY > lastScrollY.current && window.scrollY > 50) {
-                setVisible(false);
-            } else {
-                setVisible(true);
-            }
-            lastScrollY.current = window.scrollY;
+            setVisible(window.scrollY <= 50 || window.scrollY < document.documentElement.scrollTop);
         };
 
         window.addEventListener("scroll", handleScroll);
@@ -35,58 +35,83 @@ export default function NavbarClient({ menu, companyName }: { menu: any; company
 
     // Detect if the screen is mobile
     useEffect(() => {
+        if (typeof window === "undefined") return;
+
         const checkScreenSize = () => setIsMobile(window.innerWidth < 768);
         checkScreenSize();
         window.addEventListener("resize", checkScreenSize);
 
-        setTimeout(() => setHydrated(true), 150);
         return () => window.removeEventListener("resize", checkScreenSize);
     }, []);
 
     return (
-        <nav
-            className={`fixed top-0 left-0 w-full bg-white dark:bg-neutral-900 z-50 
-            shadow-[0px_4px_10px_rgba(0,0,0,0.06)] dark:shadow-[0px_4px_10px_rgba(255,255,255,0.06)]
-            transition-transform duration-300
-            ${visible ? "translate-y-0" : "-translate-y-full"}`}
-        >
-            <div className="py-2 lg:py-3 px-4 lg:px-6 flex items-center justify-between">
-                {/* Left: Hamburger Menu (Mobile) or Logo (Desktop) */}
-                <div className="relative w-10 h-10 flex items-center">
-                    {isMobile ? (
-                        <button onClick={() => setMenuOpen(true)} className="transition-transform duration-300 ease-in-out hover:scale-110">
-                            <Bars3Icon className="h-6 w-6 text-black dark:text-white" />
-                        </button>
-                    ) : (
-                        <Link href="/" prefetch={true} className="flex items-center gap-2">
-                            <LogoSquare />
-                        </Link>
-                    )}
-                </div>
+        <>
+            <AppBar
+                position="fixed"
+                sx={{
+                    transition: "transform 0.3s ease-in-out",
+                    transform: visible ? "translateY(0)" : "translateY(-100%)",
+                    backgroundColor: theme.palette.background.default,
+                    backdropFilter: "blur(8px)",
+                    boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.15)",
+                    borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+                }}
+            >
+                <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", minHeight: "56px" }}>
 
-                {/* Mobile View: Left-Aligned Company Name */}
-                <div className="md:hidden flex-grow flex items-center justify-start pl-4">
-                    <span className="text-base font-medium uppercase tracking-wider whitespace-nowrap overflow-hidden text-ellipsis">
+                    {/* Left Section: Logo or Hamburger Menu */}
+                    <Box display="flex" alignItems="center" gap={isMobile ? 1 : 2}>
+                        {isMobile ? (
+                            <IconButton
+                                edge="start"
+                                color="inherit"
+                                aria-label="menu"
+                                onClick={() => setMenuOpen(true)}
+                                sx={{
+                                    transition: "transform 0.2s",
+                                    "&:hover": { transform: "scale(1.1)" },
+                                }}
+                            >
+                                <MenuIcon fontSize="small" />
+                            </IconButton>
+                        ) : (
+                            <Link href="/" prefetch={true} style={{ display: "flex", alignItems: "center" }}>
+                                <LogoSquare />
+                            </Link>
+                        )}
+                    </Box>
+
+                    {/* Center Section: Company Name (✅ Centered on Desktop) */}
+                    <Typography
+                        variant="h6"
+                        sx={{
+                            textTransform: "uppercase",
+                            fontWeight: "medium",
+                            letterSpacing: "0.12em",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            fontSize: isMobile ? "0.9rem" : "1.2rem",
+                            color: theme.palette.text.primary,
+                            flexGrow: isMobile ? 0 : 1, // ✅ Center the name in web view
+                            textAlign: isMobile ? "left" : "center", // ✅ Center align for desktop
+                            marginLeft: isMobile ? "-4px" : "0", // ✅ Reduce gap between menu icon & name
+                        }}
+                    >
                         {companyName}
-                    </span>
-                </div>
+                    </Typography>
 
-                {/* Desktop View: Centered Company Name */}
-                <div className="hidden md:flex absolute left-1/2 -translate-x-1/2">
-                    <span className="text-xl font-medium uppercase tracking-widest whitespace-nowrap overflow-hidden text-ellipsis">
-                        {companyName}
-                    </span>
-                </div>
+                    {/* Right Section: Search, Cart, Theme Toggle (✅ Flex-End & Tight Spacing) */}
+                    <Box display="flex" alignItems="center" justifyContent="flex-end" gap={0}>
+                        <Search isMobile={isMobile} setMenuOpen={setMenuOpen} />
+                        <CartModal />
+                        {!isMobile && <ThemeToggle />}
+                    </Box>
+                </Toolbar>
+            </AppBar>
 
-                {/* Right: Search & Cart */}
-                <div className="flex items-center gap-2 justify-end w-full">
-                    <Search isMobile={isMobile} />
-                    <CartModal />
-                </div>
-            </div>
-
-            {/* Mobile Menu */}
-            {isMobile && <MobileMenu menu={menu} isOpen={menuOpen} setIsOpen={setMenuOpen} />}
-        </nav>
+            {/* ✅ Drawer is always mounted but visibility is controlled by `open` */}
+            <MobileMenu menu={menu} isOpen={menuOpen} setIsOpen={setMenuOpen} companyName={companyName} />
+        </>
     );
 }
