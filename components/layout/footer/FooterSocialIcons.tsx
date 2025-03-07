@@ -1,21 +1,34 @@
+import { Box, IconButton } from "@mui/material";
 import socialLinks from "lib/data/socials.json";
 import { FaFacebookF, FaInstagram, FaTiktok } from "react-icons/fa6";
 
-// Explicitly define the type of iconMap
+// Map social names to MUI icons or fallback to react-icons
 const iconMap: Record<string, JSX.Element> = {
-  FaFacebookF: <FaFacebookF />,
-  FaInstagram: <FaInstagram />,
-  FaTiktok: <FaTiktok />,
+  Facebook: <FaFacebookF />,
+  Instagram: <FaInstagram />,
+  TikTok: <FaTiktok />
 };
 
-export default function FooterSocialIcons() {
+export default function FooterSocialIcons({ sizeInRem = 1.2 }: { sizeInRem?: number }) {
   return (
-    <div className="flex flex-row items-center gap-4">
-      {socialLinks.map((social, i) => (
-        <a key={i} href={social.url} target="_blank" rel="noopener noreferrer" aria-label={social.name}>
-          {iconMap[social.icon as keyof typeof iconMap] || null}
-        </a>
-      ))}
-    </div>
+    <Box display="flex" alignItems="center" gap={0.5} mt={0.5}>
+      {socialLinks.map((social, i) => {
+        const IconComponent = iconMap[social.name];
+
+        return (
+          <IconButton
+            key={i}
+            component="a"
+            href={social.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={social.name}
+            sx={{ color: "inherit", fontSize: `${sizeInRem}rem`, padding: "4px" }}
+          >
+            {IconComponent && <Box sx={{ fontSize: `${sizeInRem}rem` }}>{IconComponent}</Box>}
+          </IconButton>
+        );
+      })}
+    </Box>
   );
 }

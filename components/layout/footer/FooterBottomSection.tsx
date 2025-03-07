@@ -4,9 +4,11 @@ import FooterSocialIcons from "./FooterSocialIcons";
 export default function FooterBottomSection({
   companyName,
   displayYear,
+  sizeInRem = 0.8,
 }: {
   companyName: string;
   displayYear: string | number;
+  sizeInRem?: number; // ✅ Optional size parameter
 }) {
   return (
     <div className="border-t border-gray-800 py-4 text-xs text-gray-500">
@@ -14,7 +16,7 @@ export default function FooterBottomSection({
         <p className="font-light tracking-tight whitespace-nowrap">
           &copy; {displayYear} {companyName}
         </p>
-        <FooterSocialIcons />
+        <FooterSocialIcons sizeInRem={sizeInRem} /> {/* ✅ Pass size prop */}
       </div>
     </div>
   );

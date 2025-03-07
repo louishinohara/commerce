@@ -9,6 +9,7 @@ interface SearchProps {
   autoFocus?: boolean;
   isMobile?: boolean;
   setMenuOpen?: (open: boolean) => void;
+  width?: number | "100%";
 }
 
 export default function Search({
@@ -16,6 +17,7 @@ export default function Search({
   autoFocus = false,
   isMobile = false,
   setMenuOpen = () => {},
+  width = 240,
 }: SearchProps) {
   const theme = useTheme();
   const [expanded, setExpanded] = useState(alwaysExpanded);
@@ -47,7 +49,13 @@ export default function Search({
     } else {
       setExpanded((prev) => !prev);
     }
-  }
+  };
+
+  const handleClose = () => {
+    if (!alwaysExpanded) {
+      setExpanded(false);
+    }
+  };
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === "Escape" && !alwaysExpanded) {
@@ -64,15 +72,15 @@ export default function Search({
         position: "relative",
         display: "flex",
         alignItems: "center",
-        width: isExpanded ? (isMobile ? "100%" : 240) : 40,
+        width: isExpanded ? (isMobile ? "100%" : width) : 40,
         height: 36,
         borderRadius: "18px",
         border: isExpanded ? `1px solid ${theme.palette.divider}` : "none",
         backgroundColor: isExpanded ? theme.palette.background.paper : "transparent",
         ...(isExpanded && {
           backdropFilter: "blur(4px)",
-          backgroundColor: theme.palette.mode === "dark" 
-            ? "rgba(30, 30, 30, 0.8)" 
+          backgroundColor: theme.palette.mode === "dark"
+            ? "rgba(30, 30, 30, 0.8)"
             : "rgba(255, 255, 255, 0.8)",
         }),
         transition: "all 0.3s ease-in-out",
@@ -80,12 +88,41 @@ export default function Search({
       }}
       onKeyDown={handleKeyDown}
     >
+      {/* Search Icon Container */}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          pl: 1,
+          color: theme.palette.text.secondary,
+        }}
+      >
+        {isExpanded ? (
+          <SearchIcon fontSize="small" />
+        ) : (
+          <IconButton
+            onClick={handleOnClick}
+            size="small"
+            sx={{
+              p: 0.5,
+              transition: "transform 0.2s ease-in-out",
+              "&:hover": { transform: "scale(1.1)" },
+            }}
+            aria-label="Open search"
+          >
+            <SearchIcon fontSize="small" />
+          </IconButton>
+        )}
+      </Box>
+
+      {/* Input Field */}
       <InputBase
         inputRef={inputRef}
         placeholder="Search..."
         sx={{
           flex: 1,
-          ml: 1,
+          ml: 0.5, // Reduced from 1 (8px) to 0.5 (4px) to move text closer to icon
+          mr: 1,
           fontSize: "0.875rem",
           color: theme.palette.text.primary,
           transition: "opacity 0.2s ease-in-out",
@@ -93,16 +130,16 @@ export default function Search({
           width: isExpanded ? "100%" : 0,
           "& .MuiInputBase-input": {
             padding: "0 8px",
-            border: "none", // Explicitly remove any border
-            backgroundColor: "transparent", // Ensure no background
+            border: "none",
+            backgroundColor: "transparent",
             "&::placeholder": {
               color: theme.palette.text.secondary,
               opacity: 0.7,
             },
             "&:focus": {
-              outline: "none", // Remove default focus outline
-              boxShadow: "none", // Remove any shadow
-              border: "none", // Ensure no border on focus
+              outline: "none",
+              boxShadow: "none",
+              border: "none",
             },
           },
         }}
@@ -112,21 +149,22 @@ export default function Search({
         }}
       />
 
-      <IconButton
-        onClick={() => handleOnClick()}
-        size="small"
-        sx={{
-          transition: "transform 0.2s ease-in-out",
-          "&:hover": { transform: "scale(1.1)" },
-        }}
-        aria-label={isExpanded ? "Close search" : "Open search"}
-      >
-        {isExpanded ? (
-          <CloseIcon fontSize="small" />
-        ) : (
-          <SearchIcon fontSize="small" />
-        )}
-      </IconButton>
+      {/* Close Button */}
+      {isExpanded && (
+        <IconButton
+          onClick={handleClose}
+          size="small"
+          sx={{
+            p: 0.5,
+            mr: 0.5,
+            transition: "transform 0.2s ease-in-out",
+            "&:hover": { transform: "scale(1.1)" },
+          }}
+          aria-label="Close search"
+        >
+          <CloseIcon sx={{ fontSize: "16px" }} />
+        </IconButton>
+      )}
     </Box>
   );
 }

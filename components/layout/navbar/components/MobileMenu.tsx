@@ -1,14 +1,19 @@
 "use client";
 
-import { Close as CloseIcon } from "@mui/icons-material";
-import { Box, Divider, Drawer, IconButton, List, ListItem, ListItemText, Typography, useTheme } from "@mui/material";
-import FooterSocialIcons from "components/layout/footer/FooterSocialIcons";
-import LogoSquare from "components/logo-square";
+import {
+  Box,
+  Divider,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  useTheme
+} from "@mui/material";
+import FooterBottomSection from "components/layout/footer/FooterBottomSection";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import Search from "./Search";
-
 
 export default function MobileMenu({
   menu,
@@ -21,6 +26,7 @@ export default function MobileMenu({
   setIsOpen: (open: boolean) => void;
   companyName: string;
 }) {
+  const currentYear = new Date().getFullYear();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const theme = useTheme();
@@ -37,40 +43,31 @@ export default function MobileMenu({
       anchor="left"
       open={isOpen}
       onClose={() => setIsOpen(false)}
+      ModalProps={{ keepMounted: true }} // ✅ Prevents unmounting
+      BackdropProps={{ invisible: true }} // ✅ Removes the backdrop
       sx={{
         "& .MuiDrawer-paper": {
-          width: "85%",
-          maxWidth: 320,
+          width: "100%",
+          display: "flex",
+          height: "calc(100% - 56px)", // ✅ Start below the navbar
+          marginTop: "56px", // ✅ Matches navbar height
+          flexDirection: "column",
           backgroundColor: theme.palette.background.default,
           color: theme.palette.text.primary,
           boxShadow: "4px 0 10px rgba(0, 0, 0, 0.1)",
+          position: "relative",
         },
       }}
     >
-      {/* Header Section (Logo, Company Name, Close Button) */}
-      <Box display="flex" alignItems="center" justifyContent="space-between" px={2} py={2}>
-        <Box display="flex" alignItems="center" gap={1}>
-          <LogoSquare />
-          <Typography variant="h6" sx={{ textTransform: "uppercase", fontWeight: 500 }}>
-            {companyName}
-          </Typography>
-        </Box>
-        <IconButton onClick={() => setIsOpen(false)} aria-label="Close menu">
-          <CloseIcon />
-        </IconButton>
-      </Box>
-
-      <Divider />
-
-      {/* Search Bar (Always Expanded) */}
-      <Box px={2} py={2}>
-        <Search alwaysExpanded />
+      {/* Search Bar (Always Expanded, Centered with Padding) */}
+      <Box px={2} py={1} display="flex" justifyContent="center">
+        <Search alwaysExpanded width="100%" />
       </Box>
 
       <Divider />
 
       {/* Menu Items */}
-      <List>
+      <List sx={{ flexGrow: 1 }}>
         {menu.map((item) => (
           <ListItem
             key={item.title}
@@ -95,15 +92,7 @@ export default function MobileMenu({
       </List>
 
       <Divider />
-
-      {/* Footer (Company Name & Social Icons) */}
-      <Box textAlign="center" py={2}>
-        <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>
-          &copy; {new Date().getFullYear()} {companyName}
-        </Typography>
-        <FooterSocialIcons />
-
-      </Box>
+      <FooterBottomSection companyName={companyName} displayYear={currentYear} sizeInRem={0.8} />
     </Drawer>
   );
 }
