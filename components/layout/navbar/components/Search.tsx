@@ -16,7 +16,7 @@ export default function Search({
   alwaysExpanded = false,
   autoFocus = false,
   isMobile = false,
-  setMenuOpen = () => {},
+  setMenuOpen = () => { },
   width = 240,
 }: SearchProps) {
   const theme = useTheme();
@@ -121,9 +121,9 @@ export default function Search({
         placeholder="Search..."
         sx={{
           flex: 1,
-          ml: 0.5, // Reduced from 1 (8px) to 0.5 (4px) to move text closer to icon
+          ml: 0.5,
           mr: 1,
-          fontSize: "0.875rem",
+          fontSize: isMobile ? "16px" : "0.875rem",
           color: theme.palette.text.primary,
           transition: "opacity 0.2s ease-in-out",
           opacity: isExpanded ? 1 : 0,
@@ -132,6 +132,7 @@ export default function Search({
             padding: "0 8px",
             border: "none",
             backgroundColor: "transparent",
+            fontSize: isMobile ? "16px" : "0.875rem",
             "&::placeholder": {
               color: theme.palette.text.secondary,
               opacity: 0.7,

@@ -27,6 +27,7 @@ export default function SideMenuToggle({
                         alignItems: "center",
                         justifyContent: "center",
                         padding: 0,
+                        paddingLeft: "8px",
                         cursor: "pointer",
                         transition: "transform 0.3s ease-in-out",
                         "&:hover": { transform: "scale(1.05)" },
@@ -36,8 +37,8 @@ export default function SideMenuToggle({
                         id="nav-icon1"
                         className={menuOpen ? "open" : ""}
                         sx={{
-                            width: "18px",  // ✅ Smaller width
-                            height: "12px", // ✅ Adjusted height for proportional scaling
+                            width: "18px", 
+                            height: "12px",
                             position: "relative",
                             transition: "0.5s ease-in-out",
                             "& span": {

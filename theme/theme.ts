@@ -32,7 +32,7 @@ export const darkTheme: ThemeOptions = {
 // Define the Light Theme
 export const lightTheme: ThemeOptions = {
   palette: {
-    mode: "light",
+    mode: "dark",
     primary: {
       main: "#121212", // Deep black for contrast
     },

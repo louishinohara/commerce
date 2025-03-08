@@ -20,7 +20,7 @@ export default function ThemeContextProvider({ children }: { children: ReactNode
     if (typeof window !== "undefined") {
       return (localStorage.getItem("theme") as "light" | "dark") || "light";
     }
-    return "light"; 
+    return "dark"; 
   });
 
   const [hydrated, setHydrated] = useState(false);

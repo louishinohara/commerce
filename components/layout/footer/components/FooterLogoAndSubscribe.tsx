@@ -32,9 +32,10 @@ export default function FooterLogoAndSubscribe() {
       <div className="flex flex-col items-center md:items-start text-center md:text-left w-full">
         {/* Company Name */}
         <Link href="/" className="flex items-center gap-2">
-          <span className="uppercase font-semibold tracking-normal text-lg whitespace-nowrap overflow-hidden text-ellipsis">
+          <span className="font-semibold tracking-wide text-2xl whitespace-nowrap overflow-hidden text-ellipsis">
             {process.env.NEXT_PUBLIC_COMPANY_NAME}
           </span>
+
         </Link>
         {/* Title/SubTitle above the subscribe form */}
         <div className="mt-3 w-full">
