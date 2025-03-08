@@ -24,13 +24,13 @@ export default function NavbarClient({ menu, companyName }: { menu: any; company
         // Primary Navigation
         { title: "Home", path: "/", category: "primary", isMobile: false },
         { title: "New Arrivals", path: "/new-arrivals", category: "primary", isMobile: false },
-        { title: "Lighting", path: "/lighting", category: "primary", isMobile: false },
-        { title: "Diffusers", path: "/diffusers", category: "primary", isMobile: false },
+        { title: "Lighting", path: "/lighting", category: "primary", isMobile: true },
+        { title: "Diffusers", path: "/diffusers", category: "primary", isMobile: true },
 
         // Secondary Navigation
-        { title: "About Us", path: "/about", category: "secondary", isMobile: false },
-        { title: "Contact Us", path: "/contact", category: "secondary", isMobile: false },
-        { title: "Track Order", path: "/track-your-order", category: "secondary", isMobile: false },
+        { title: "About Us", path: "/about", category: "secondary", isMobile: true },
+        { title: "Contact Us", path: "/contact", category: "secondary", isMobile: true },
+        { title: "Track Order", path: "/track-your-order", category: "secondary", isMobile: true },
     ];
 
 
@@ -85,7 +85,7 @@ export default function NavbarClient({ menu, companyName }: { menu: any; company
                         ) : (
                             <>
                                 {menuItems.map((item) =>
-                                    !item.isMobile ? ( // ✅ Corrected conditional check
+                                    !item.isMobile ? ( 
                                         <Link
                                             key={item.title}
                                             href={item.path}

@@ -22,9 +22,19 @@ export default function FooterTopSection({
       </div>
 
       {/* Mobile Layout */}
-      <div className="flex flex-col md:hidden gap-8">
-        <FooterLogoAndSubscribe />
-        <FooterColumns columns={columns} />
+      <div className="md:hidden">
+        {/* Grid layout for mobile */}
+        <div className="grid grid-cols-2 gap-6">
+          {/* First row: Logo and Subscribe Form */}
+          <div className="col-span-2">
+            <FooterLogoAndSubscribe />
+          </div>
+
+          {/* Second row: Footer Columns */}
+          <div className="col-span-2">
+            <FooterColumns columns={columns} />
+          </div>
+        </div>
       </div>
     </div>
   );
