@@ -21,7 +21,7 @@ export const darkTheme: ThemeOptions = {
       paper: "#1E1E1E",
     },
     navbar: {
-      main: "#0A0A0A", // ✅ Darker navbar background
+      main: "#0A0A0A",
     },
     text: {
       primary: "#ffffff",

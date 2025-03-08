@@ -1,4 +1,3 @@
-// components/layout/footer/FooterBottomSection.tsx
 import FooterSocialIcons from "./FooterSocialIcons";
 
 export default function FooterBottomSection({
@@ -8,7 +7,7 @@ export default function FooterBottomSection({
 }: {
   companyName: string;
   displayYear: string | number;
-  sizeInRem?: number; // ✅ Optional size parameter
+  sizeInRem?: number;
 }) {
   return (
     <div className="border-t border-gray-600 py-4 text-xs text-gray-400">
@@ -16,7 +15,7 @@ export default function FooterBottomSection({
         <p className="font-light tracking-tight whitespace-nowrap">
           &copy; {displayYear} {companyName}
         </p>
-        <FooterSocialIcons sizeInRem={sizeInRem} /> {/* ✅ Pass size prop */}
+        <FooterSocialIcons sizeInRem={sizeInRem} />
       </div>
     </div>
   );
