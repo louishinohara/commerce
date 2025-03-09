@@ -1,4 +1,5 @@
 import { CartProvider } from "components/cart/cart-context";
+import LandingPage from "components/layout/landingPage/LandingPage";
 import { Navbar } from "components/layout/navbar";
 import { WelcomeToast } from "components/welcome-toast";
 import { GeistSans } from "geist/font/sans";
@@ -32,6 +33,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         <ThemeProvider>
           <CartProvider cartPromise={cart}>
             <Navbar />
+            <LandingPage />
             <main className="mt-[64px]">
               {children}
               <Toaster closeButton />
