@@ -143,8 +143,8 @@ export default function NavbarClient({ companyName }: { menu: any; companyName: 
                                             <Typography
                                                 variant="body1"
                                                 sx={{
+                                                    fontFamily: '"Playfair Display", serif',
                                                     color: theme.palette.text.primary,
-                                                    textTransform: "uppercase",
                                                     fontWeight: "medium",
                                                     fontSize: "0.875rem",
                                                     letterSpacing: "0.08em",
@@ -177,18 +177,21 @@ export default function NavbarClient({ companyName }: { menu: any; companyName: 
                             <Typography
                                 variant="h6"
                                 sx={{
-                                    fontWeight: "medium",
-                                    letterSpacing: "0.12em",
+                                    fontFamily: '"Playfair Display", serif',
+                                    fontWeight: 700,
+                                    // fontStyle: "italic",
+                                    letterSpacing: "0.07em",
                                     textOverflow: "ellipsis",
                                     whiteSpace: "nowrap",
                                     overflow: "hidden",
-                                    fontSize: isMobile ? "1.3rem" : "1.4rem",
+                                    fontSize: isMobile ? "1.1rem" : "1.7rem",
                                     color: theme.palette.text.primary,
-                                    "&:hover": { opacity: 0.8 }
+                                    "&:hover": { opacity: 0.8 },
                                 }}
                             >
                                 {companyName}
                             </Typography>
+
                         </Link>
                     </Box>
 
@@ -212,7 +215,7 @@ export default function NavbarClient({ companyName }: { menu: any; companyName: 
 
             {/* Mobile drawer menu */}
             <MobileMenu
-                isOpen={menuOpen}
+                isOpen={true}
                 setIsOpen={setMenuOpen}
                 companyName={companyName}
                 menuItems={menuItems}

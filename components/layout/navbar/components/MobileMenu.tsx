@@ -72,7 +72,6 @@ export default function MobileMenu({
         }
       }}
     >
-
       <Box
         px={2}
         py={1}
