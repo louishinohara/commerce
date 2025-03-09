@@ -1,4 +1,3 @@
-// components/layout/footer/FooterColumns.tsx
 import { Suspense } from "react";
 
 export default function FooterColumns({
@@ -60,10 +59,7 @@ function FooterMenu({ menu }: { menu: { title: string; path: string }[] }) {
     <ul className="flex flex-col items-start space-y-2">
       {menu.map((item) => (
         <li key={item.title}>
-          <a
-            href={item.path}
-            className="text-gray-400 hover:text-white transition-colors text-xs"
-          >
+          <a href={item.path} className="text-gray-400 hover:text-white transition-colors text-xs">
             {item.title}
           </a>
         </li>

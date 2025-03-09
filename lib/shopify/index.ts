@@ -542,8 +542,6 @@ export async function getAllPolicies(): Promise<Policy[]> {
     query: GET_ALL_POLICIES_QUERY,
   });
 
-  console.log("Shopify API Response:", res); // ✅ Debugging output
-
   // Ensure res.body.data.shop exists before accessing it
   if (!res?.body?.data?.shop) {
     console.error("Error fetching policies. Response:", res);

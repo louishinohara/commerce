@@ -27,6 +27,18 @@ export const getPageQuery = /* GraphQL */ `
   ${pageFragment}
 `;
 
+export const getPolicyQuery = /* GraphQL */ `
+  query getPolicy($policyType: String!) {
+    shop {
+      policy: ${"$"}policyType {
+        id
+        title
+        body
+      }
+    }
+  }
+`;
+
 export const getPagesQuery = /* GraphQL */ `
   query getPages {
     pages(first: 100) {

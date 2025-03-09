@@ -1,6 +1,6 @@
 "use client";
 
-import { AppBar, Box, Toolbar, Typography, useTheme } from "@mui/material";
+import { alpha, AppBar, Box, Toolbar, Typography, useTheme } from "@mui/material";
 import useIsMobile from "components/hooks/useIsMobile";
 import ThemeToggle from "components/theme/ThemeToggle";
 import dynamic from "next/dynamic";
@@ -101,7 +101,7 @@ export default function NavbarClient({ companyName }: { menu: any; companyName: 
                 sx={{
                     transition: "transform 0.6s ease-in-out, background-color 0.6s ease-in-out, backdrop-filter 0.6s ease-in-out, box-shadow 0.6s ease-in-out",
                     transform: visible ? "translateY(0)" : "translateY(-100%)",
-                    backgroundColor: atTop ? "rgba(0, 0, 0, 0)" : theme.palette.background.default + "cc",
+                    backgroundColor: atTop ? "rgba(0, 0, 0, 0)" : alpha(theme.palette.background.default, 0.93),
                     backdropFilter: atTop ? "none" : "blur(8px)",
                     boxShadow: atTop ? "none" : "0px 4px 12px rgba(0, 0, 0, 0.1)",
                     borderBottom: atTop ? "none" : "1px solid rgba(255, 255, 255, 0.08)",
@@ -215,7 +215,7 @@ export default function NavbarClient({ companyName }: { menu: any; companyName: 
 
             {/* Mobile drawer menu */}
             <MobileMenu
-                isOpen={true}
+                isOpen={menuOpen}
                 setIsOpen={setMenuOpen}
                 companyName={companyName}
                 menuItems={menuItems}

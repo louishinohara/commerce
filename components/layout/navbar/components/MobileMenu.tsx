@@ -9,6 +9,7 @@ import {
   ListItemText,
   useTheme
 } from "@mui/material";
+import { alpha } from "@mui/material/styles";
 import FooterBottomSection from "components/layout/footer/FooterBottomSection";
 import ThemeToggle from "components/theme/ThemeToggle";
 import Link from "next/link";
@@ -59,16 +60,15 @@ export default function MobileMenu({
           height: "calc(100% - 48px)",
           marginTop: "48px",
           flexDirection: "column",
-          // Remove the default Paper overlay:
           backgroundImage: "none !important",
-          // Then set whatever background color you’d like:
+          // Set a semi-transparent background:
           backgroundColor: atTop
-            ? theme.palette.background.default
-            : theme.palette.background.paper,
-
+            ? "rgba(0, 0, 0, 0.8)"
+            : alpha(theme.palette.background.default, 0.93),
           color: theme.palette.text.primary,
           boxShadow: "4px 0 10px rgba(0, 0, 0, 0.1)",
           position: "relative",
+          backdropFilter: "blur(10px)", // Optional: Adds a frosted glass effect
         }
       }}
     >

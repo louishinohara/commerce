@@ -1,4 +1,4 @@
-import { getMenu } from 'lib/shopify';
+import { getAllPolicies, getMenu } from 'lib/shopify';
 import { notFound } from 'next/navigation';
 import FooterBottomSection from './FooterBottomSection';
 import FooterTopSection from './FooterTopSection';
@@ -9,7 +9,10 @@ export default async function Footer() {
   const currentYear = new Date().getFullYear();
 
   // Fetch each menu
-  const policiesMenu = await getMenu('footer');
+  const policiesMenu = (await getAllPolicies()).map((policy) => ({
+    title: policy.title,
+    path: `/policies/${policy.handle}`,
+  }));
   const aboutUsMenu = await getMenu('about-us');
   const helpCenterMenu = await getMenu('help-center');
 

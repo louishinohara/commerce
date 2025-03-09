@@ -1,5 +1,5 @@
 import { CartProvider } from "components/cart/cart-context";
-import LandingPage from "components/layout/landingPage/LandingPage";
+import LandingPageClient from "components/layout/landingPage/LandingPageClient";
 import { Navbar } from "components/layout/navbar";
 import { WelcomeToast } from "components/welcome-toast";
 import { GeistSans } from "geist/font/sans";
@@ -7,7 +7,7 @@ import { getCart } from "lib/shopify";
 import { baseUrl } from "lib/utils";
 import { ReactNode } from "react";
 import { Toaster } from "sonner";
-import ThemeProvider from "theme/ThemeProvider"; // ✅ Import fixed theme provider
+import ThemeProvider from "theme/ThemeProvider";
 import "./globals.css";
 
 const { SITE_NAME } = process.env;
@@ -33,7 +33,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         <ThemeProvider>
           <CartProvider cartPromise={cart}>
             <Navbar />
-            <LandingPage />
+            <LandingPageClient />
             <main className="mt-[64px]">
               {children}
               <Toaster closeButton />
