@@ -26,8 +26,8 @@ export default function SideMenuToggle({
                         flexDirection: "column",
                         alignItems: "center",
                         justifyContent: "center",
-                        padding: 0,
-                        paddingLeft: "8px",
+                        padding: 0, // ✅ Removed padding that was causing a gap
+                        margin: 0,  // ✅ Ensure no extra margins
                         cursor: "pointer",
                         transition: "transform 0.3s ease-in-out",
                         "&:hover": { transform: "scale(1.05)" },
@@ -44,7 +44,7 @@ export default function SideMenuToggle({
                             "& span": {
                                 display: "block",
                                 position: "absolute",
-                                height: "2px", // ✅ Thinner lines
+                                height: "2px", 
                                 width: "100%",
                                 backgroundColor: "white",
                                 borderRadius: "2px",
@@ -56,12 +56,12 @@ export default function SideMenuToggle({
                                 transform: menuOpen ? "translateY(6px) rotate(45deg)" : "none",
                             },
                             "& span:nth-of-type(2)": {
-                                top: "6px", // ✅ Less spacing
+                                top: "6px",
                                 opacity: menuOpen ? 0 : 1,
                                 transform: menuOpen ? "translateX(-24px)" : "none",
                             },
                             "& span:nth-of-type(3)": {
-                                top: "12px", // ✅ Adjusted for smaller size
+                                top: "12px",
                                 transform: menuOpen ? "translateY(-6px) rotate(-45deg)" : "none",
                             },
                         }}
