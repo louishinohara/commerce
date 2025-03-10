@@ -21,13 +21,13 @@ export default function LandingPage() {
     const [heroContent, setHeroContent] = useState<HeroContent | null>(null);
 
     useEffect(() => {
-        fetch("/data/landingPage.json") // ✅ Fetch from `public` folder
+        fetch("/data/landingPage/data.json")
             .then((response) => response.json())
             .then((data: HeroContent) => setHeroContent(data))
             .catch((error) => console.error("Error fetching hero content:", error));
     }, []);
 
-    if (!heroContent) return null; // Prevent rendering before data loads
+    if (!heroContent) return null;
 
     return (
         <Box

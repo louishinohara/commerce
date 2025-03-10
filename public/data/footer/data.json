@@ -1,0 +1,26 @@
+{
+    "columns": [
+      {
+        "title": "About Us",
+        "menu": [
+          { "title": "Our Vision", "path": "/our-vision" }
+        ]
+      },
+      {
+        "title": "Policies",
+        "menu": [
+          { "title": "Privacy Policy", "path": "/policies/privacy-policy" },
+          { "title": "Terms of Service", "path": "/policies/terms-of-service" },
+          { "title": "Refund Policy", "path": "/policies/refund-policy" }
+        ]
+      },
+      {
+        "title": "Help Center",
+        "menu": [
+          { "title": "FAQ", "path": "/faq" },
+          { "title": "Contact Us", "path": "/contact" }
+        ]
+      }
+    ]
+  }
+  

@@ -65,7 +65,7 @@ export default function NavbarClient({ companyName }: { menu: any; companyName: 
                         const isScrollingUp = scrollDiff < 0;
 
                         // Check if the page is at the very top
-                        setAtTop(currentScrollY === 0);
+                        setAtTop(currentScrollY <= 30);
 
                         /**
                          * Show navbar if:
