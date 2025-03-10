@@ -18,7 +18,7 @@
         "title": "Help Center",
         "menu": [
           { "title": "FAQ", "path": "/faq" },
-          { "title": "Contact Us", "path": "/contact" }
+          { "title": "Contact Us", "path": "/contact-information" }
         ]
       }
     ]
