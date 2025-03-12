@@ -60,6 +60,10 @@ export default function Search({
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === "Escape" && !alwaysExpanded) {
       setExpanded(false);
+    } else if (event.key === "Enter" && inputRef.current?.value.trim()) {
+      event.preventDefault(); // Prevent default form submission
+      const query = inputRef.current.value.trim();
+      window.location.href = `/search?q=${encodeURIComponent(query)}`; // Navigate to search results
     }
   };
 

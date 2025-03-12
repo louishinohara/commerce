@@ -4,19 +4,48 @@ import { useEffect, useState } from "react";
 import FooterBottomSection from "./FooterBottomSection";
 import FooterTopSection from "./FooterTopSection";
 
-const { NEXT_PUBLIC_COMPANY_NAME, SITE_NAME } = process.env;
+interface PageData {
+  title: string;
+  path: string;
+}
+
+interface FooterMenu {
+  title: string;
+  menu: string[];
+}
+
+interface NavData {
+  pages: Record<string, PageData>;
+  footerMenu: FooterMenu[];
+}
 
 export default function Footer() {
-  const [navData, setNavData] = useState<{ columns: { title: string; menu: { title: string; path: string }[] }[] } | null>(null);
+  const [navData, setNavData] = useState<{ columns: { title: string; menu: PageData[] }[] } | null>(null);
 
   useEffect(() => {
-    fetch("/data/footer/data.json")
+    fetch("/data/menu/data.json")
       .then((res) => res.json())
-      .then((data) => setNavData(data))
+      .then((data: NavData) => {
+        if (!data || !data.footerMenu || !data.pages) {
+          console.error("Invalid footer data format:", data);
+          return;
+        }
+
+        // Convert menu keys to full menu objects, ensuring valid keys exist
+        const formattedColumns = data.footerMenu.map((section) => ({
+          title: section.title,
+          menu: section.menu
+            .map((key) => data.pages[key]) // Replace key with actual data
+            .filter((item) => item !== undefined) // Ensure only valid items are included
+            .sort((a, b) => a.title.localeCompare(b.title)) // Sort alphabetically by title
+        }));
+
+        setNavData({ columns: formattedColumns });
+      })
       .catch((error) => console.error("Error fetching navigation data:", error));
   }, []);
 
-  if (!navData || !navData.columns) return null; // Prevent rendering if data isn't loaded
+  if (!navData) return null; // Prevent rendering if data isn't loaded
 
   return (
     <footer className="bg-black text-white">
@@ -25,7 +54,7 @@ export default function Footer() {
 
       {/* Bottom portion of the footer: copyright */}
       <FooterBottomSection
-        companyName={NEXT_PUBLIC_COMPANY_NAME || SITE_NAME || ""}
+        companyName={process.env.NEXT_PUBLIC_COMPANY_NAME || process.env.SITE_NAME || ""}
         displayYear={new Date().getFullYear()}
       />
     </footer>

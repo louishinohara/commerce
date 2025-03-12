@@ -8,17 +8,23 @@ import { useThemeMode } from "theme/useThemeMode";
 export default function ThemeToggle() {
   const { toggleColorMode } = useColorMode();
   const isDarkMode = useThemeMode();
+  const shouldUse = false;
 
   return (
-    <IconButton
-      onClick={toggleColorMode}
-      size="small"
-      sx={{
-        transition: "transform 0.2s ease-in-out",
-        "&:hover": { transform: "scale(1.1)" }
-      }}
-    >
-      {isDarkMode ? <Brightness7 fontSize="small" /> : <Brightness4 fontSize="small" />}
-    </IconButton>
+    <>
+      {
+        shouldUse &&
+        <IconButton
+          onClick={toggleColorMode}
+          size="small"
+          sx={{
+            transition: "transform 0.2s ease-in-out",
+            "&:hover": { transform: "scale(1.1)" }
+          }}
+        >
+          {isDarkMode ? <Brightness7 fontSize="small" /> : <Brightness4 fontSize="small" />}
+        </IconButton>
+      }</>
+
   );
 }

@@ -1,0 +1,34 @@
+{
+    "pages": {
+      "home": { "title": "Home", "path": "/" },
+      "newArrivals": { "title": "New Arrivals", "path": "/new-arrivals" },
+      "lighting": { "title": "Lighting", "path": "/lighting" },
+      "diffusers": { "title": "Diffusers", "path": "/diffusers" },
+      "about": { "title": "About Us", "path": "/about" },
+      "contact": { "title": "Contact Us", "path": "/contact" },
+      "trackOrder": { "title": "Track Order", "path": "/track-your-order" },
+      "ourVision": { "title": "Our Vision", "path": "/our-vision" },
+      "faq": { "title": "FAQ", "path": "/faq" },
+      "contactInfo": { "title": "Contact Us", "path": "/contact-information" },
+      "privacyPolicy": { "title": "Privacy Policy", "path": "/policies/privacy-policy" },
+      "termsOfService": { "title": "Terms of Service", "path": "/policies/terms-of-service" },
+      "refundPolicy": { "title": "Refund Policy", "path": "/policies/refund-policy" }
+    },
+    "primaryMenu": ["home", "newArrivals", "lighting", "diffusers"],
+    "secondaryMenu": ["about", "contact", "trackOrder"],
+    "footerMenu": [
+      {
+        "title": "About Us",
+        "menu": ["ourVision"]
+      },
+      {
+        "title": "Policies",
+        "menu": ["privacyPolicy", "termsOfService", "refundPolicy"]
+      },
+      {
+        "title": "Help Center",
+        "menu": ["faq", "contactInfo", "trackOrder"]
+      }
+    ]
+  }
+  

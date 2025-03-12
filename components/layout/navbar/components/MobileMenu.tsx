@@ -14,26 +14,65 @@ import FooterBottomSection from "components/layout/footer/FooterBottomSection";
 import ThemeToggle from "components/theme/ThemeToggle";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Search from "./Search";
+
+interface PageData {
+  title: string;
+  path: string;
+  isMobile: boolean;
+}
+
+interface MenuData {
+  pages: Record<string, PageData>;
+  primaryMenu: string[];
+  secondaryMenu: string[];
+}
 
 export default function MobileMenu({
   isOpen,
   setIsOpen,
   companyName,
-  menuItems,
   atTop
 }: {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
   companyName: string;
-  menuItems: { title: string; path: string; category: string }[];
   atTop: boolean;
 }) {
-  const currentYear = new Date().getFullYear();
+  const [primaryMenu, setPrimaryMenu] = useState<PageData[]>([]);
+  const [secondaryMenu, setSecondaryMenu] = useState<PageData[]>([]);
+
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const theme = useTheme();
+
+  // Fetch menu data from JSON
+  useEffect(() => {
+    fetch("/data/menu/data.json")
+      .then((res) => res.json())
+      .then((data: MenuData) => {
+        if (!data || !data.pages || !data.primaryMenu || !data.secondaryMenu) {
+          console.error("Invalid menu data:", data);
+          return;
+        }
+
+        // Ensure only valid menu items are stored
+        setPrimaryMenu(
+          data.primaryMenu
+            .map((key) => data.pages[key])
+            .filter((item): item is PageData => item !== undefined)
+        );
+
+        setSecondaryMenu(
+          data.secondaryMenu
+            .map((key) => data.pages[key])
+            .filter((item): item is PageData => item !== undefined)
+            .sort((a, b) => a.title.localeCompare(b.title)) 
+        );
+      })
+      .catch((error) => console.error("Error fetching menu data:", error));
+  }, []);
 
   // Close menu on route change
   useEffect(() => {
@@ -41,10 +80,6 @@ export default function MobileMenu({
       setIsOpen(false);
     }
   }, [pathname, searchParams]);
-
-  // Filter menu items by category
-  const primaryMenu = menuItems.filter((item) => item.category === "primary");
-  const secondaryMenu = menuItems.filter((item) => item.category === "secondary");
 
   return (
     <Drawer
@@ -61,7 +96,6 @@ export default function MobileMenu({
           marginTop: "48px",
           flexDirection: "column",
           backgroundImage: "none !important",
-          // Set a semi-transparent background:
           backgroundColor: atTop
             ? "rgba(0, 0, 0, 0.8)"
             : alpha(theme.palette.background.default, 0.93),
@@ -155,10 +189,10 @@ export default function MobileMenu({
       <Box sx={{ width: "100%", mt: "auto", pb: 0, mb: 0 }}>
         <FooterBottomSection
           companyName={companyName}
-          displayYear={currentYear}
+          displayYear={new Date().getFullYear()}
           sizeInRem={0.8}
         />
       </Box>
-    </Drawer >
+    </Drawer>
   );
 }
