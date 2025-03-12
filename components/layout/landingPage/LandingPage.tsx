@@ -46,7 +46,7 @@ export default function LandingPage() {
                     left: 0,
                     width: "100%",
                     height: "100%",
-                    backgroundImage: `url('${heroContent.imageUrl || "/images/landingPage/image1.jpg"}')`, 
+                    backgroundImage: `url('${heroContent.imageUrl || "/images/landingPage/image1.jpg"}')`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                     zIndex: -1,
@@ -106,31 +106,31 @@ export default function LandingPage() {
                 >
                     {heroContent.description}
                 </Typography>
-
                 <Button
-                    variant="outlined"
                     sx={{
-                        color: "rgba(255, 255, 255, 0.9)", // Slightly off-white for a softer look
-                        borderColor: "rgba(255, 255, 255, 0.5)", // Subtle border
-                        fontSize: "0.85rem", // Slightly smaller text
-                        paddingX: 3.5, // Balanced width
-                        paddingY: 0.7, // Reduced height
-                        borderRadius: "40px", // Soft curves, but not too bulky
+                        color: "#121212",
+                        backgroundColor: "rgba(255, 255, 255, 0.88)",
+                        fontSize: "0.85rem",
+                        fontWeight: "500",
+                        paddingX: 4,
+                        paddingY: 1,
+                        borderRadius: "36px", // Slightly more refined curves
                         textTransform: "none",
-                        letterSpacing: "0.05rem",
-                        backdropFilter: "blur(6px)", // Subtle glass effect
-                        backgroundColor: "rgba(255, 255, 255, 0.04)", // Slight transparency
-                        transition: "all 0.25s ease-in-out",
+                        letterSpacing: "0.03rem",
+                        boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.08)", // Subtle depth without overpowering
+                        transition: "all 0.3s ease-in-out",
+                        backdropFilter: "blur(8px)", // Soft diffusion effect
                         "&:hover": {
-                            borderColor: "rgba(255, 255, 255, 0.8)",
-                            backgroundColor: "rgba(255, 255, 255, 0.08)", // Softer hover effect
-                            transform: "scale(1.04)", // Slight scaling, but not over the top
+                            backgroundColor: "rgba(255, 255, 255, 0.95)", // Slightly more opaque on hover
+                            boxShadow: "0px 6px 16px rgba(0, 0, 0, 0.12)", // A gentle lift effect
+                            transform: "scale(1.03)", // Subtle interaction feedback
                         },
                     }}
                     href={heroContent.buttonLink}
                 >
                     {heroContent.buttonText}
                 </Button>
+
             </Box>
         </Box>
     );

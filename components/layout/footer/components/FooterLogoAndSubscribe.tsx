@@ -18,15 +18,11 @@ export default function FooterLogoAndSubscribe() {
         body: JSON.stringify({ email }),
       });
 
-      // Log the response for debugging
-      console.log("Response:", res);
-
       if (!res.ok) {
         throw new Error("Subscription failed");
       }
 
       const data = await res.json();
-      console.log("Subscription successful:", data);
 
       setStatus("success");
       setEmail("");
