@@ -1,9 +1,9 @@
 {
     "pages": {
       "home": { "title": "Home", "path": "/" },
-      "newArrivals": { "title": "New Arrivals", "path": "/new-arrivals" },
-      "lighting": { "title": "Lighting", "path": "/lighting" },
-      "diffusers": { "title": "Diffusers", "path": "/diffusers" },
+      "newArrivals": { "title": "New Arrivals", "path": "/search/new-arrivals" },
+      "lighting": { "title": "Lighting", "path": "/search/lighting" },
+      "diffusers": { "title": "Diffusers", "path": "/search/diffusers" },
       "about": { "title": "About Us", "path": "/about" },
       "contact": { "title": "Contact Us", "path": "/contact" },
       "trackOrder": { "title": "Track Order", "path": "/track-your-order" },
@@ -14,6 +14,7 @@
       "termsOfService": { "title": "Terms of Service", "path": "/policies/terms-of-service" },
       "refundPolicy": { "title": "Refund Policy", "path": "/policies/refund-policy" }
     },
+    "deskTopMenu": ["home", "newArrivals"],
     "primaryMenu": ["home", "newArrivals", "lighting", "diffusers"],
     "secondaryMenu": ["about", "contact", "trackOrder"],
     "footerMenu": [

@@ -72,7 +72,7 @@ export default function SideMenuToggle({
                     </Box>
                 </IconButton>
             ) : (
-                <Link href="/" prefetch={true} style={{ display: "flex", alignItems: "center" }}>
+                <Link href="/" prefetch={true} style={{ display: "flex", alignItems: "center" }} scroll={false}>
                     <LogoSquare />
                 </Link>
             )}

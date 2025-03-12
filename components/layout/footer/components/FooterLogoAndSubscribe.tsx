@@ -55,7 +55,7 @@ export default function FooterLogoAndSubscribe() {
       textAlign="left" // Align text to the left
     >
       {/* Company Name */}
-      <Link href="/" style={{ textDecoration: "none" }}>
+      <Link href="/" style={{ textDecoration: "none" }} scroll={false}>
         <Typography variant="h5" fontWeight="bold" letterSpacing="0.05em" color="text.primary">
           {process.env.NEXT_PUBLIC_COMPANY_NAME}
         </Typography>
