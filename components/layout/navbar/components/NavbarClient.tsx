@@ -172,9 +172,26 @@ export default function NavbarClient({ companyName }: { companyName: string }) {
                         fontWeight: "medium",
                         fontSize: "0.875rem",
                         letterSpacing: "0.08em",
-                        marginX: 0.3,
-                        lineHeight: 1,
-                        "&:hover": { opacity: 0.8 }
+                        marginX: 0.6,
+                        position: "relative",
+                        transition: "color 0.2s ease-in-out",
+                        "&:hover": {
+                          color: alpha(theme.palette.text.primary, 0.8), // Slightly faded hover effect
+                        },
+                        "&::after": {
+                          content: '""',
+                          position: "absolute",
+                          left: "50%",
+                          bottom: "-3px",
+                          width: "0%",
+                          height: "2px",
+                          backgroundColor: alpha(theme.palette.text.primary, 0.6), // Subtle underline
+                          transition: "width 0.3s ease-in-out, left 0.3s ease-in-out",
+                        },
+                        "&:hover::after": {
+                          width: "100%",
+                          left: "0%",
+                        },
                       }}
                     >
                       {item.title}
