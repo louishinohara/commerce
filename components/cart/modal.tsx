@@ -10,10 +10,10 @@ import Link from 'next/link';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { createCartAndSetCookie, redirectToCheckout } from './actions';
 import { useCart } from './cart-context';
+import CartIcon from './CartIcon';
 import CheckoutButton from './components/CheckoutButton';
 import CloseCart from './components/CloseCart';
 import { DeleteItemButton } from './delete-item-button';
-import OpenCart from './open-cart';
 
 type MerchandiseSearchParams = {
   [key: string]: string;
@@ -46,7 +46,7 @@ export default function CartModal() {
     <>
       {/* ✅ FIX: Replace <button> with a <div> to avoid nesting issues */}
       <div onClick={openCart} aria-label="Open cart" className="cursor-pointer">
-        <OpenCart quantity={cart?.totalQuantity} />
+        <CartIcon quantity={cart?.totalQuantity} />
       </div>
 
       <Transition show={isOpen}>

@@ -1,11 +1,10 @@
 "use client";
 
 import { alpha, AppBar, Box, Toolbar, Typography, useTheme } from "@mui/material";
+import CartModal from "components/cart/components/CartModal";
 import useIsMobile from "components/hooks/useIsMobile";
 import ThemeToggle from "components/theme/ThemeToggle";
-import dynamic from "next/dynamic";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import MobileMenu from "./MobileMenu";
 import Search from "./Search";
@@ -14,8 +13,6 @@ import SideMenuToggle from "./SideMenuToggle";
 /**
  * Dynamically import the cart modal to avoid SSR issues
  */
-const CartModal = dynamic(() => import("components/cart/modal"), { ssr: false });
-
 // -- NEW: Define interfaces matching your JSON structure --
 interface PageData {
   title: string;
@@ -47,16 +44,12 @@ export default function NavbarClient({ companyName }: { companyName: string }) {
   const [atTop, setAtTop] = useState(true);
   // Mobile menu state
   const [menuOpen, setMenuOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
 
-  // Track whether the search bar is open
-  const [searchOpen, setSearchOpen] = useState(false);
-
-  // -- NEW: Desktop menu items read from JSON --
   const [desktopItems, setDesktopItems] = useState<PageData[]>([]);
 
   const theme = useTheme();
   const isMobile = useIsMobile();
-  const pathname = usePathname();
 
   // -- NEW: Fetch menu data from JSON for the desktop items --
   useEffect(() => {
@@ -116,6 +109,24 @@ export default function NavbarClient({ companyName }: { companyName: string }) {
     };
   }, []);
 
+  const toggleMenu = () => {
+    setMenuOpen((prev) => {
+      if (!prev || cartOpen) {
+        setCartOpen(false); // Close cart when opening menu
+      }
+      return !prev;
+    });
+  };
+
+  const toggleCart = () => {
+    setCartOpen((prev) => {
+      if (!prev || menuOpen) {
+        setMenuOpen(false); // Close menu when opening cart
+      }
+      return !prev;
+    });
+  };
+
   return (
     <>
       <AppBar
@@ -153,7 +164,7 @@ export default function NavbarClient({ companyName }: { companyName: string }) {
             }}
           >
             {isMobile ? (
-              <SideMenuToggle isMobile={isMobile} setMenuOpen={setMenuOpen} menuOpen={menuOpen} />
+              <SideMenuToggle isMobile={isMobile} menuOpen={menuOpen} cartOpen={cartOpen} toggleMenu={toggleMenu} />
             ) : (
               // Desktop menu
               <>
@@ -176,7 +187,7 @@ export default function NavbarClient({ companyName }: { companyName: string }) {
                         position: "relative",
                         transition: "color 0.2s ease-in-out",
                         "&:hover": {
-                          color: alpha(theme.palette.text.primary, 0.8), // Slightly faded hover effect
+                          color: alpha(theme.palette.text.primary, 0.8),
                         },
                         "&::after": {
                           content: '""',
@@ -185,7 +196,7 @@ export default function NavbarClient({ companyName }: { companyName: string }) {
                           bottom: "-3px",
                           width: "0%",
                           height: "2px",
-                          backgroundColor: alpha(theme.palette.text.primary, 0.6), // Subtle underline
+                          backgroundColor: alpha(theme.palette.text.primary, 0.6),
                           transition: "width 0.3s ease-in-out, left 0.3s ease-in-out",
                         },
                         "&:hover::after": {
@@ -205,7 +216,7 @@ export default function NavbarClient({ companyName }: { companyName: string }) {
           {/* Center Section (Company name) */}
           <Box
             sx={{
-              flex: searchOpen ? 0.8 : 1,
+              flex: 1,
               display: "flex",
               alignItems: "center",
               justifyContent: "flex-start",
@@ -241,7 +252,7 @@ export default function NavbarClient({ companyName }: { companyName: string }) {
           {/* Right Section */}
           <Box
             sx={{
-              flex: searchOpen ? 1.2 : 1,
+              flex: 1,
               display: "flex",
               alignItems: "center",
               justifyContent: "flex-end",
@@ -249,7 +260,7 @@ export default function NavbarClient({ companyName }: { companyName: string }) {
             }}
           >
             <Search isMobile={isMobile} setMenuOpen={setMenuOpen} />
-            <CartModal />
+            <CartModal atTop={atTop} cartOpen={cartOpen} toggleCart={toggleCart} />
             {!isMobile && <ThemeToggle />}
           </Box>
         </Toolbar>

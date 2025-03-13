@@ -3,7 +3,7 @@
       "home": { "title": "Home", "path": "/" },
       "newArrivals": { "title": "New Arrivals", "path": "/search/new-arrivals" },
       "lighting": { "title": "Lighting", "path": "/search/lighting" },
-      "diffusers": { "title": "Diffusers", "path": "/search/diffusers" },
+      "diffusers": { "title": "Diffusers", "path": "/search/diffuser" },
       "about": { "title": "About Us", "path": "/about" },
       "contact": { "title": "Contact Us", "path": "/contact" },
       "trackOrder": { "title": "Track Order", "path": "/track-your-order" },

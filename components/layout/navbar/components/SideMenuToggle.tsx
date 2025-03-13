@@ -4,12 +4,14 @@ import Link from "next/link";
 
 export default function SideMenuToggle({ 
     isMobile, 
-    setMenuOpen, 
-    menuOpen 
+    cartOpen,
+    menuOpen,
+    toggleMenu
 }: { 
     isMobile: boolean; 
-    setMenuOpen: (open: boolean) => void; 
     menuOpen: boolean;
+    cartOpen: boolean;
+    toggleMenu: () => void; 
 }) {
     return (
         <>
@@ -18,7 +20,7 @@ export default function SideMenuToggle({
                     edge="start"
                     color="inherit"
                     aria-label="menu"
-                    onClick={() => setMenuOpen(!menuOpen)}
+                    onClick={toggleMenu} // Calls toggleMenu directly
                     sx={{
                         width: 30,
                         height: 30,
@@ -26,8 +28,8 @@ export default function SideMenuToggle({
                         flexDirection: "column",
                         alignItems: "center",
                         justifyContent: "center",
-                        padding: 0, // ✅ Removed padding that was causing a gap
-                        margin: 0,  // ✅ Ensure no extra margins
+                        padding: 0,
+                        margin: 0,
                         cursor: "pointer",
                         transition: "transform 0.3s ease-in-out",
                         "&:hover": { transform: "scale(1.05)" },
@@ -35,7 +37,7 @@ export default function SideMenuToggle({
                 >
                     <Box
                         id="nav-icon1"
-                        className={menuOpen ? "open" : ""}
+                        className={menuOpen || cartOpen ? "open" : ""}
                         sx={{
                             width: "18px", 
                             height: "12px",
@@ -53,16 +55,16 @@ export default function SideMenuToggle({
                             },
                             "& span:nth-of-type(1)": {
                                 top: 0,
-                                transform: menuOpen ? "translateY(6px) rotate(45deg)" : "none",
+                                transform: menuOpen || cartOpen ? "translateY(6px) rotate(45deg)" : "none",
                             },
                             "& span:nth-of-type(2)": {
                                 top: "6px",
-                                opacity: menuOpen ? 0 : 1,
-                                transform: menuOpen ? "translateX(-24px)" : "none",
+                                opacity: menuOpen || cartOpen ? 0 : 1, // Hide middle span
+                                transform: menuOpen || cartOpen ? "translateX(-24px)" : "none",
                             },
                             "& span:nth-of-type(3)": {
                                 top: "12px",
-                                transform: menuOpen ? "translateY(-6px) rotate(-45deg)" : "none",
+                                transform: menuOpen || cartOpen ? "translateY(-6px) rotate(-45deg)" : "none",
                             },
                         }}
                     >
