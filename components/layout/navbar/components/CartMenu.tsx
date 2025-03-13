@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Backdrop,
   Box,
   Drawer,
   useTheme
@@ -22,43 +23,53 @@ export default function CartMenu({ atTop, cartOpen, cart, toggleCart }: {
   const searchParams = useSearchParams();
   const theme = useTheme();
 
-  // Close menu on route change
-  // useEffect(() => {
-  //   if (cartOpen) {
-  //     setCartOpen(false);
-  //   }
-  // }, [pathname, searchParams]);
-
   return (
-    <Drawer
-      anchor="right"
-      open={cartOpen}
-      onClose={toggleCart}
-      ModalProps={{ keepMounted: true }}
-      BackdropProps={{ invisible: true }}
-      sx={{
-        "& .MuiDrawer-paper": {
-          width: isMobile ? "100%" : "40%",
-          maxWidth: "500px",
-          display: "flex",
-          height: isMobile ? "calc(100% - 48px)" : "100%",
-          marginTop: isMobile ? "48px" : "0px",
-          flexDirection: "column",
-          backgroundImage: "none !important",
-          backgroundColor: "rgba(0, 0, 0, 0.999)",
-          color: theme.palette.text.primary,
-          boxShadow: "-4px 0 10px rgba(0, 0, 0, 0.1)",
+    <>
+      <Backdrop
+        open={cartOpen}
+        onClick={toggleCart}
+        sx={{
+          zIndex: 1099,
+          backgroundColor: "rgba(0, 0, 0, 0.1)",
+          backdropFilter: "blur(1px)",
+          transition: "opacity 0.3s ease-in-out",
           position: "fixed",
-          right: 0,
-          top: 0,
-          bottom: 0,
-        },
-      }}
-    >
-      <Box flex={1} p={2} display="flex" flexDirection="column">
-        {cart?.lines?.length > 0 ? <CartContents cart={cart} /> : <EmptyCart />}
-      </Box>
+          left: 0,
+          width: "100vw",
+          height: "100vh",
+        }}
+      />
 
-    </Drawer>
+      {/* ✅ Cart Drawer */}
+      <Drawer
+        anchor="right"
+        open={cartOpen}
+        onClose={toggleCart}
+        ModalProps={{ keepMounted: true }}
+        sx={{
+          zIndex: 1200,
+          "& .MuiDrawer-paper": {
+            width: isMobile ? "100%" : "40%",
+            maxWidth: "500px",
+            display: "flex",
+            height: isMobile ? "calc(100% - 48px)" : "100%",
+            marginTop: isMobile ? "48px" : "0px",
+            flexDirection: "column",
+            backgroundImage: "none !important",
+            backgroundColor: "rgba(0, 0, 0, 0.999)", // Dark cart menu
+            color: theme.palette.text.primary,
+            boxShadow: "-4px 0 10px rgba(0, 0, 0, 0.1)",
+            position: "fixed",
+            right: 0,
+            top: 0,
+            bottom: 0,
+          },
+        }}
+      >
+        <Box flex={1} p={2} display="flex" flexDirection="column">
+          {cart?.lines?.length > 0 ? <CartContents cart={cart} /> : <EmptyCart />}
+        </Box>
+      </Drawer>
+    </>
   );
 }
