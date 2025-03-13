@@ -30,7 +30,7 @@ export default function CartMenu({ atTop, cartOpen, cart, toggleCart }: {
         onClick={toggleCart}
         sx={{
           zIndex: 1099,
-          backgroundColor: "rgba(0, 0, 0, 0.1)",
+          backgroundColor: "rgba(0, 0, 0, 0.01)",
           backdropFilter: "blur(1px)",
           transition: "opacity 0.3s ease-in-out",
           position: "fixed",
