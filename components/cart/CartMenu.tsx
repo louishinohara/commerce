@@ -11,7 +11,6 @@ import CartContents from "components/cart/components/CartContents";
 import CartHeader from "components/cart/components/CartHeader";
 import EmptyCart from "components/cart/components/EmptyCart";
 import useIsMobile from "components/hooks/useIsMobile";
-import { usePathname, useSearchParams } from "next/navigation";
 
 export default function CartMenu({ cartOpen, cart, toggleCart }: {
   toggleCart: () => void;
@@ -20,16 +19,7 @@ export default function CartMenu({ cartOpen, cart, toggleCart }: {
   atTop: boolean;
 }) {
   const isMobile = useIsMobile();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
   const theme = useTheme();
-
-  // Close menu on route change
-  // useEffect(() => {
-  //   if (cartOpen) {
-  //     setCartOpen(false);
-  //   }
-  // }, [pathname, searchParams]);
 
   return (
     <>

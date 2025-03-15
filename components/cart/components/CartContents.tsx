@@ -1,4 +1,4 @@
-import { redirectToCheckout } from '../actions';
+import { redirectToCheckout } from '../actions/actions';
 import CartItem from './CartItem';
 import CartSummary from './CartSummary';
 import CheckoutButton from './CheckoutButton';

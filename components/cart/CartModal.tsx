@@ -2,7 +2,7 @@
 
 import CartMenu from 'components/cart/CartMenu';
 import { useEffect, useRef } from 'react';
-import { createCartAndSetCookie } from './actions';
+import { createCartAndSetCookie } from './actions/actions';
 import { useCart } from './actions/cart-context';
 import CartIcon from './CartIcon';
 
