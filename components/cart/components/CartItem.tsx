@@ -11,8 +11,8 @@ import { EditItemQuantityButton } from "./button/EditItemQuantityButton";
 
 /**
  * A single cart line item that shows:
- * - Image on the left
- * - Product title at top right, product type under that
+ * - Image on the left (clickable)
+ * - Product title at top right (clickable), product type under that
  * - Price on the bottom-left, quantity counters on the bottom-right
  */
 export default function CartItem({ item, toggleCart }: { item: any; toggleCart: () => void }) {
@@ -53,8 +53,11 @@ export default function CartItem({ item, toggleCart }: { item: any; toggleCart: 
 
   return (
     <li className="flex w-full items-start border-b border-neutral-300 dark:border-neutral-700 py-4 px-2 space-x-3">
-      {/* Left: product image */}
-      <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border border-neutral-300 bg-neutral-300 dark:border-neutral-700 dark:bg-neutral-900">
+      {/* Left: Clickable product image */}
+      <div
+        className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border border-neutral-300 bg-neutral-300 dark:border-neutral-700 dark:bg-neutral-900 cursor-pointer"
+        onClick={toggleCart}
+      >
         <Image
           className="h-full w-full object-cover"
           width={64}
@@ -64,14 +67,15 @@ export default function CartItem({ item, toggleCart }: { item: any; toggleCart: 
         />
       </div>
 
-      {/* Right: product details */}
+      {/* Right: Clickable product details */}
       <div className="flex flex-col flex-1">
-        {/* Title */}
-        <Link href={merchandiseUrl} className="hover:underline">
+        {/* Clickable Title */}
+        <Link href={merchandiseUrl} onClick={toggleCart} className="hover:underline cursor-pointer">
           <p className="text-sm font-medium leading-tight">
             {item.merchandise.product.title}
           </p>
         </Link>
+        
         {/* Type (variant) */}
         {item.merchandise.title !== DEFAULT_OPTION && (
           <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">

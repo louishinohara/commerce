@@ -14,19 +14,21 @@ import FooterBottomSection from "components/layout/footer/FooterBottomSection";
 import ThemeToggle from "components/theme/ThemeToggle";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo } from "react";
+import menuData from "../../../../lib/data/menu/data.json";
 import Search from "./Search";
 
 interface PageData {
   title: string;
   path: string;
-  isMobile: boolean;
+  isMobile?: boolean;
 }
-
 interface MenuData {
   pages: Record<string, PageData>;
+  deskTopMenu: string[];
   primaryMenu: string[];
   secondaryMenu: string[];
+  footerMenu: { title: string; menu: string[] }[];
 }
 
 export default function MobileMenu({
@@ -40,39 +42,29 @@ export default function MobileMenu({
   companyName: string;
   atTop: boolean;
 }) {
-  const [primaryMenu, setPrimaryMenu] = useState<PageData[]>([]);
-  const [secondaryMenu, setSecondaryMenu] = useState<PageData[]>([]);
-
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const theme = useTheme();
 
-  // Fetch menu data from JSON
-  useEffect(() => {
-    fetch("/data/menu/data.json")
-      .then((res) => res.json())
-      .then((data: MenuData) => {
-        if (!data || !data.pages || !data.primaryMenu || !data.secondaryMenu) {
-          console.error("Invalid menu data:", data);
-          return;
-        }
+  const typedMenuData: MenuData = menuData;
 
-        // Ensure only valid menu items are stored
-        setPrimaryMenu(
-          data.primaryMenu
-            .map((key) => data.pages[key])
-            .filter((item): item is PageData => item !== undefined)
-        );
+  const { primaryMenu, secondaryMenu } = useMemo(() => {
+  if (!typedMenuData || !typedMenuData.pages || !typedMenuData.primaryMenu || !typedMenuData.secondaryMenu) {
+    console.error("Invalid menu data:", typedMenuData);
+    return { primaryMenu: [], secondaryMenu: [] };
+  }
 
-        setSecondaryMenu(
-          data.secondaryMenu
-            .map((key) => data.pages[key])
-            .filter((item): item is PageData => item !== undefined)
-            .sort((a, b) => a.title.localeCompare(b.title)) 
-        );
-      })
-      .catch((error) => console.error("Error fetching menu data:", error));
-  }, []);
+  return {
+    primaryMenu: typedMenuData.primaryMenu
+      .map((key) => typedMenuData.pages[key]) // ✅ Now TypeScript allows this!
+      .filter((item): item is PageData => item !== undefined),
+
+    secondaryMenu: typedMenuData.secondaryMenu
+      .map((key) => typedMenuData.pages[key])
+      .filter((item): item is PageData => item !== undefined)
+      .sort((a, b) => a.title.localeCompare(b.title)),
+  };
+}, []);
 
   // Close menu on route change
   useEffect(() => {

@@ -2,32 +2,23 @@
 
 import { Box, Button, Typography, useTheme } from "@mui/material";
 import useIsMobile from "components/hooks/useIsMobile";
-import { useEffect, useState } from "react";
+import heroContent from "../../../lib/data/landingPage/data.json";
 
-// Define the TypeScript type for the JSON data
+// Define TypeScript type for JSON data
 interface HeroContent {
     title: string;
     description: string;
     buttonText: string;
     buttonLink: string;
-    imageUrl?: string; // Optional in case it's missing
+    imageUrl?: string;
 }
 
 export default function LandingPage() {
     const theme = useTheme();
     const isMobile = useIsMobile();
 
-    // Define useState with the correct type
-    const [heroContent, setHeroContent] = useState<HeroContent | null>(null);
-
-    useEffect(() => {
-        fetch("/data/landingPage/data.json")
-            .then((response) => response.json())
-            .then((data: HeroContent) => setHeroContent(data))
-            .catch((error) => console.error("Error fetching hero content:", error));
-    }, []);
-
-    if (!heroContent) return null;
+    // Ensure the imported JSON matches the expected type
+    const content: HeroContent = heroContent;
 
     return (
         <Box
@@ -46,7 +37,7 @@ export default function LandingPage() {
                     left: 0,
                     width: "100%",
                     height: "100%",
-                    backgroundImage: `url('${heroContent.imageUrl || "/images/landingPage/image1.jpg"}')`,
+                    backgroundImage: `url('${content.imageUrl || "/images/landingPage/image1.jpg"}')`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                     zIndex: -1,
@@ -90,7 +81,7 @@ export default function LandingPage() {
                         textTransform: "none",
                     }}
                 >
-                    {heroContent.title}
+                    {content.title}
                 </Typography>
 
                 <Typography
@@ -104,8 +95,9 @@ export default function LandingPage() {
                         marginBottom: 3,
                     }}
                 >
-                    {heroContent.description}
+                    {content.description}
                 </Typography>
+
                 <Button
                     sx={{
                         color: "#121212",
@@ -114,23 +106,22 @@ export default function LandingPage() {
                         fontWeight: "500",
                         paddingX: 4,
                         paddingY: 1,
-                        borderRadius: "36px", // Slightly more refined curves
+                        borderRadius: "36px",
                         textTransform: "none",
                         letterSpacing: "0.03rem",
-                        boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.08)", // Subtle depth without overpowering
+                        boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.08)",
                         transition: "all 0.3s ease-in-out",
-                        backdropFilter: "blur(8px)", // Soft diffusion effect
+                        backdropFilter: "blur(8px)",
                         "&:hover": {
-                            backgroundColor: "rgba(255, 255, 255, 0.95)", // Slightly more opaque on hover
-                            boxShadow: "0px 6px 16px rgba(0, 0, 0, 0.12)", // A gentle lift effect
-                            transform: "scale(1.03)", // Subtle interaction feedback
+                            backgroundColor: "rgba(255, 255, 255, 0.95)",
+                            boxShadow: "0px 6px 16px rgba(0, 0, 0, 0.12)",
+                            transform: "scale(1.03)",
                         },
                     }}
-                    href={heroContent.buttonLink}
+                    href={content.buttonLink}
                 >
-                    {heroContent.buttonText}
+                    {content.buttonText}
                 </Button>
-
             </Box>
         </Box>
     );

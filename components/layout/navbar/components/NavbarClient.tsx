@@ -3,11 +3,12 @@
 import { alpha, AppBar, Box, Toolbar, Typography, useTheme } from "@mui/material";
 import { keyframes } from "@mui/system";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import CartModal from "components/cart/components/CartModal";
 import useIsMobile from "components/hooks/useIsMobile";
 import ThemeToggle from "components/theme/ThemeToggle";
+import menuData from "../../../../lib/data/menu/data.json";
 import MobileMenu from "./MobileMenu";
 import Search from "./Search";
 import SideMenuToggle from "./SideMenuToggle";
@@ -15,20 +16,16 @@ import SideMenuToggle from "./SideMenuToggle";
 interface PageData {
   title: string;
   path: string;
-  isMobile: boolean;
+  isMobile?: boolean;
 }
 
 interface MenuData {
-  pages: Record<string, PageData>;
+  pages: Record<string, PageData>; // ✅ Allows dynamic indexing
   deskTopMenu: string[];
-  primaryMenu: string[];
-  secondaryMenu: string[];
-  footerMenu: {
-    title: string;
-    menu: string[];
-  }[];
 }
 
+// ✅ Ensure TypeScript recognizes menuData as MenuData
+const typedMenuData: MenuData = menuData;
 /* 
   Keyframes for a slower, more visible animation:
   - slideInFromLeft: background moves from 200% → 0% (left-to-right fill).
@@ -53,32 +50,18 @@ export default function NavbarClient({ companyName }: { companyName: string }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
 
-  // Desktop menu items from JSON
-  const [desktopItems, setDesktopItems] = useState<PageData[]>([]);
-
   const theme = useTheme();
   const isMobile = useIsMobile();
 
-  /*
-    Fetch menu data for desktop:
-    - Maps 'deskTopMenu' keys to PageData objects in 'pages'
-    - Filters out any that are "isMobile"
-  */
-  useEffect(() => {
-    fetch("/data/menu/data.json")
-      .then((res) => res.json())
-      .then((data: MenuData) => {
-        if (!data || !data.pages || !data.deskTopMenu) {
-          console.error("Invalid menu data:", data);
-          return;
-        }
-        const fetchedDesktopItems = data.deskTopMenu
-          .map((key) => data.pages[key])
-          .filter((item): item is PageData => item !== undefined && !item.isMobile);
+  const desktopItems = useMemo(() => {
+    if (!typedMenuData || !typedMenuData.pages || !typedMenuData.deskTopMenu) {
+      console.error("Invalid menu data:", typedMenuData);
+      return [];
+    }
 
-        setDesktopItems(fetchedDesktopItems);
-      })
-      .catch((error) => console.error("Error fetching desktop menu:", error));
+    return typedMenuData.deskTopMenu
+      .map((key) => typedMenuData.pages[key as keyof typeof typedMenuData.pages]) // ✅ Fix: Explicitly define key type
+      .filter((item): item is PageData => item !== undefined && !item.isMobile);
   }, []);
 
   /*
@@ -189,8 +172,8 @@ export default function NavbarClient({ companyName }: { companyName: string }) {
             menuOpen && isMobile
               ? "200% center"
               : cartOpen && isMobile
-              ? "-200% center"
-              : undefined,
+                ? "-200% center"
+                : undefined,
           animation: animation || "none",
 
           // If menu/cart is open on mobile => remove blur/box-shadow
@@ -198,20 +181,20 @@ export default function NavbarClient({ companyName }: { companyName: string }) {
           backdropFilter: isMobile && (menuOpen || cartOpen)
             ? "none"
             : atTop
-            ? "none"
-            : "blur(8px)",
+              ? "none"
+              : "blur(8px)",
           boxShadow:
             isMobile && (menuOpen || cartOpen)
               ? "none"
               : atTop
-              ? "none"
-              : "0px 4px 12px rgba(0, 0, 0, 0.1)",
+                ? "none"
+                : "0px 4px 12px rgba(0, 0, 0, 0.1)",
           borderBottom:
             isMobile && (menuOpen || cartOpen)
               ? "none"
               : atTop
-              ? "none"
-              : "1px solid rgba(255, 255, 255, 0.08)",
+                ? "none"
+                : "1px solid rgba(255, 255, 255, 0.08)",
           minHeight: "48px",
         }}
       >
