@@ -179,6 +179,8 @@ function cartReducer(state: Cart | undefined, action: CartAction): Cart {
           )
         : [...currentCart.lines, updatedItem];
 
+        console.log("Updated cart", currentCart);
+        console.log("Updated lines", updatedLines);
       return {
         ...currentCart,
         ...updateCartTotals(updatedLines),

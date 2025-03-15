@@ -1,16 +1,19 @@
+"use client";
 import { redirectToCheckout } from '../actions';
+import { useCart } from '../cart-context';
 import CartItem from './CartItem';
 import CartSummary from './CartSummary';
 import CheckoutButton from './CheckoutButton';
 
-export default function CartContents({ cart }: { cart: any }) {
+export default function CartContents({toggleCart}: {toggleCart: () => void}) {
+  const { cart } = useCart();
   return (
     <div className="flex h-full flex-col justify-between overflow-hidden p-1">
       <ul className="grow overflow-auto py-4">
-        {cart.lines
+        {cart?.lines
           .sort((a, b) => a.merchandise.product.title.localeCompare(b.merchandise.product.title))
           .map((item, i) => (
-            <CartItem key={i} item={item} />
+            <CartItem toggleCart={toggleCart} key={i} item={item} />
           ))}
       </ul>
       <CartSummary cart={cart} />
