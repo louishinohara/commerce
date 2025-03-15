@@ -1,5 +1,3 @@
-"use client";
-
 import Price from "components/price";
 import { DEFAULT_OPTION } from "lib/constants";
 import { createUrl } from "lib/utils";

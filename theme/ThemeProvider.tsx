@@ -1,4 +1,4 @@
-"use client"; // ✅ Ensure this is a client component
+"use client";
 
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from "react";
@@ -16,7 +16,6 @@ export function useColorMode() {
 
 export default function ThemeContextProvider({ children }: { children: ReactNode }) {
   const [mode, setMode] = useState<"light" | "dark">(() => {
-    // ✅ Fix: Use a safe default to prevent mismatch
     if (typeof window !== "undefined") {
       return (localStorage.getItem("theme") as "light" | "dark") || "light";
     }

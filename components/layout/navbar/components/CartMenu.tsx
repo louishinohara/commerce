@@ -135,7 +135,7 @@ export default function CartMenu({ cartOpen, cart, toggleCart }: {
     >
       <CartHeader toggleCart={toggleCart} />
       <Box flex={1} p={2} display="flex" flexDirection="column">
-        {cart?.lines?.length > 0 ? <CartContents toggleCart={toggleCart}/> : <EmptyCart />}
+        {cart?.lines?.length > 0 ? <CartContents cart={cart} toggleCart={toggleCart}/> : <EmptyCart />}
       </Box>
     </Drawer>
   );

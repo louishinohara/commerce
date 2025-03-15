@@ -1,12 +1,9 @@
-"use client";
 import { redirectToCheckout } from '../actions';
-import { useCart } from '../cart-context';
 import CartItem from './CartItem';
 import CartSummary from './CartSummary';
 import CheckoutButton from './CheckoutButton';
 
-export default function CartContents({toggleCart}: {toggleCart: () => void}) {
-  const { cart } = useCart();
+export default function CartContents({ cart, toggleCart }: { cart: any; toggleCart: () => void }) {
   return (
     <div className="flex h-full flex-col justify-between overflow-hidden p-1">
       <ul className="grow overflow-auto py-4">
