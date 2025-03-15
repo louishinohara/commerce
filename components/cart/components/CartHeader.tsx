@@ -3,7 +3,7 @@
 import CloseIcon from '@mui/icons-material/Close';
 import { Box, IconButton, Typography, useTheme } from '@mui/material';
 import useIsMobile from 'components/hooks/useIsMobile';
-import { useCart } from '../cart-context';
+import { useCart } from '../actions/cart-context';
 
 export default function CartHeader({ toggleCart }: { toggleCart: () => void }) {
   const theme = useTheme();

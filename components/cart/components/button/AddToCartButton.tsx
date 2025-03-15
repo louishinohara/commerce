@@ -3,10 +3,10 @@
 import { PlusIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import { addItem } from 'components/cart/actions';
+import { useCart } from 'components/cart/actions/cart-context';
 import { useProduct } from 'components/product/product-context';
 import { Product, ProductVariant } from 'lib/shopify/types';
 import { useActionState } from 'react';
-import { useCart } from './cart-context';
 
 function SubmitButton({
   availableForSale,
@@ -57,7 +57,7 @@ function SubmitButton({
   );
 }
 
-export function AddToCart({ product }: { product: Product }) {
+export function AddToCartButton({ product }: { product: Product }) {
   const { variants, availableForSale } = product;
   const { addCartItem } = useCart();
   const { state } = useProduct();

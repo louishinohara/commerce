@@ -1,4 +1,4 @@
-import { CartProvider } from "components/cart/cart-context";
+import { CartProvider } from "components/cart/actions/cart-context";
 import LandingPageClient from "components/layout/landingPage/LandingPageClient";
 import { Navbar } from "components/layout/navbar";
 import { WelcomeToast } from "components/welcome-toast";

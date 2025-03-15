@@ -4,7 +4,7 @@ import { createUrl } from "lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback } from "react";
-import { useCart } from "../cart-context";
+import { useCart } from "../actions/cart-context";
 import { EditItemQuantityButton } from "./button/EditItemQuantityButton";
 
 /**

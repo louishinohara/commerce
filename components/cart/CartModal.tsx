@@ -1,10 +1,10 @@
 'use client';
 
-import CartMenu from 'components/layout/navbar/components/CartMenu';
+import CartMenu from 'components/cart/CartMenu';
 import { useEffect, useRef } from 'react';
-import { createCartAndSetCookie } from '../actions';
-import { useCart } from '../cart-context';
-import CartIcon from '../CartIcon';
+import { createCartAndSetCookie } from './actions';
+import { useCart } from './actions/cart-context';
+import CartIcon from './CartIcon';
 
 
 export default function CartModal({ atTop, cartOpen, toggleCart }: {

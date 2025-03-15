@@ -1,4 +1,4 @@
-import { AddToCart } from 'components/cart/add-to-cart';
+import { AddToCartButton } from 'components/cart/components/button/AddToCartButton';
 import Price from 'components/price';
 import Prose from 'components/prose';
 import { Product } from 'lib/shopify/types';
@@ -23,7 +23,7 @@ export function ProductDescription({ product }: { product: Product }) {
           html={product.descriptionHtml}
         />
       ) : null}
-      <AddToCart product={product} />
+      <AddToCartButton product={product} />
     </>
   );
 }

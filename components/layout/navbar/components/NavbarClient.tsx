@@ -5,7 +5,7 @@ import { keyframes } from "@mui/system";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
-import CartModal from "components/cart/components/CartModal";
+import CartModal from "components/cart/CartModal";
 import useIsMobile from "components/hooks/useIsMobile";
 import ThemeToggle from "components/theme/ThemeToggle";
 import menuData from "../../../../lib/data/menu/data.json";
