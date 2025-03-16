@@ -7,7 +7,7 @@ import { useCart } from './actions/cart-context';
 import CartIcon from './CartIcon';
 
 
-export default function CartModal({ atTop, cartOpen, toggleCart }: {
+export default function Cart({ atTop, cartOpen, toggleCart }: {
   atTop: boolean;
   cartOpen: boolean;
   toggleCart: () => void;

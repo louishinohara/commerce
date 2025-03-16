@@ -7,7 +7,7 @@ import { createCustomTheme } from "./theme";
 // Theme Context
 const ColorModeContext = createContext({
   toggleColorMode: () => {},
-  mode: "light" as "light" | "dark",
+  mode: "dark" as "light" | "dark",
 });
 
 export function useColorMode() {
@@ -15,9 +15,10 @@ export function useColorMode() {
 }
 
 export default function ThemeContextProvider({ children }: { children: ReactNode }) {
+  // Default to dark mode
   const [mode, setMode] = useState<"light" | "dark">(() => {
     if (typeof window !== "undefined") {
-      return (localStorage.getItem("theme") as "light" | "dark") || "light";
+      return (localStorage.getItem("theme") as "light" | "dark") || "dark"; // Default to dark
     }
     return "dark"; 
   });
@@ -27,7 +28,7 @@ export default function ThemeContextProvider({ children }: { children: ReactNode
   useEffect(() => {
     setHydrated(true);
     const storedTheme = localStorage.getItem("theme") as "light" | "dark";
-    if (storedTheme) setMode(storedTheme);
+    setMode(storedTheme || "dark"); // Default to dark mode
   }, []);
 
   const colorMode = useMemo(
@@ -41,7 +42,7 @@ export default function ThemeContextProvider({ children }: { children: ReactNode
       },
       mode,
     }),
-    []
+    [mode] // Dependency added to ensure it updates correctly
   );
 
   const theme = useMemo(() => createCustomTheme(mode), [mode]);

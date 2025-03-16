@@ -8,7 +8,7 @@ interface SearchProps {
   alwaysExpanded?: boolean;
   autoFocus?: boolean;
   isMobile?: boolean;
-  setMenuOpen?: (open: boolean) => void;
+  setMenuOpen?: () => void;
   width?: number | "100%";
 }
 
@@ -45,7 +45,7 @@ export default function Search({
 
   const handleOnClick = () => {
     if (isMobile) {
-      setMenuOpen(true);
+      setMenuOpen();
     } else {
       setExpanded((prev) => !prev);
     }

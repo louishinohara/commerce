@@ -5,7 +5,7 @@ import { keyframes } from "@mui/system";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
-import CartModal from "components/cart/CartModal";
+import Cart from "components/cart/CartModal";
 import useIsMobile from "components/hooks/useIsMobile";
 import ThemeToggle from "components/theme/ThemeToggle";
 import menuData from "../../../../lib/data/menu/data.json";
@@ -315,8 +315,8 @@ export default function NavbarClient({ companyName }: { companyName: string }) {
               gap: 0,
             }}
           >
-            <Search isMobile={isMobile} setMenuOpen={setMenuOpen} />
-            <CartModal atTop={atTop} cartOpen={cartOpen} toggleCart={toggleCart} />
+            <Search isMobile={isMobile} setMenuOpen={toggleMenu} />
+            <Cart atTop={atTop} cartOpen={cartOpen} toggleCart={toggleCart} />
             {!isMobile && <ThemeToggle />}
           </Box>
         </Toolbar>
