@@ -5,12 +5,12 @@ import Prose from 'components/prose';
 import { getPage } from 'lib/shopify';
 import { notFound } from 'next/navigation';
 
-export async function generateMetadata(props: {
-  params: Promise<{ page: string }>;
-}): Promise<Metadata> {
-  const params = await props.params;
-  const page = await getPage(params.page);
+// ✅ Ensure Netlify doesn't expect a static .html file
+export const dynamic = "force-dynamic";
 
+export async function generateMetadata({ params }: { params: { page: string } }): Promise<Metadata> {
+  // ❌ FIX: `params` is NOT a Promise, remove `await`
+  const page = await getPage(params.page);
   if (!page) return notFound();
 
   return {
@@ -24,8 +24,8 @@ export async function generateMetadata(props: {
   };
 }
 
-export default async function Page(props: { params: Promise<{ page: string }> }) {
-  const params = await props.params;
+export default async function Page({ params }: { params: { page: string } }) {
+  // ❌ FIX: `params` is NOT a Promise, remove `await`
   const page = await getPage(params.page);
   if (!page) return notFound();
 
