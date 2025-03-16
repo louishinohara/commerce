@@ -10,13 +10,13 @@ import { Toaster } from "sonner";
 import ThemeProvider from "theme/ThemeProvider";
 import "./globals.css";
 
-const { SITE_NAME } = process.env;
+const { NEXT_PUBLIC_COMPANY_NAME } = process.env;
 
 export const metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: SITE_NAME!,
-    template: `%s | ${SITE_NAME}`,
+    default: NEXT_PUBLIC_COMPANY_NAME!,
+    template: `%s | ${NEXT_PUBLIC_COMPANY_NAME}`,
   },
   robots: {
     follow: true,

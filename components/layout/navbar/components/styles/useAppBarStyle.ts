@@ -20,10 +20,6 @@ const slideInFromRight = keyframes`
   100% { background-position: 0% center;     }
 `;
 
-/**
- * Returns an object (like `sx`) containing the final AppBar styling,
- * so you can apply it directly in `<AppBar sx={...}>`.
- */
 export function useNavbarStyles({
   isMobile,
   menuOpen,
@@ -33,20 +29,19 @@ export function useNavbarStyles({
 }: UseNavbarStylesProps): SxProps<Theme> {
   let backgroundGradient: string | undefined;
   let animation: string | undefined;
+  let backgroundColor: string = atTop ? "rgba(0, 0, 0, 0)" : "rgba(0, 0, 0, 0.98)";
 
-  // Mobile animations
   if (isMobile) {
     if (menuOpen) {
-      backgroundGradient = "linear-gradient(to right, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.8) 100%)";
+      backgroundGradient = "linear-gradient(to right, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.98) 100%)";
       animation = `${slideInFromLeft} 1.2s ease-in-out forwards`;
+      backgroundColor = "rgba(0, 0, 0, 0.98)";
     } else if (cartOpen) {
-      backgroundGradient = "linear-gradient(to left, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.8) 100%)";
+      backgroundGradient = "linear-gradient(to left, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.98) 100%)";
       animation = `${slideInFromRight} 1.2s ease-in-out forwards`;
+      backgroundColor = "rgba(0, 0, 0, 0.98)";
     }
   }
-
-  // If atTop => transparent; else => black
-  const fallbackBgColor = atTop ? "rgba(0, 0, 0, 0)" : "rgba(0, 0, 0, 0.8)";
 
   return {
     position: "fixed",
@@ -57,7 +52,7 @@ export function useNavbarStyles({
       box-shadow 0.6s ease-in-out
     `,
     transform: visible ? "translateY(0)" : "translateY(-100%)",
-    background: backgroundGradient || fallbackBgColor,
+    background: backgroundGradient || backgroundColor,
     backgroundSize: (menuOpen || cartOpen) && isMobile ? "200% 100%" : undefined,
     backgroundPosition:
       isMobile && menuOpen
@@ -67,8 +62,6 @@ export function useNavbarStyles({
         : undefined,
     animation: animation || "none",
 
-    // If menu/cart is open on mobile => no blur/box-shadow
-    // If desktop + atTop => no blur, else blur
     backdropFilter: isMobile && (menuOpen || cartOpen)
       ? "none"
       : atTop

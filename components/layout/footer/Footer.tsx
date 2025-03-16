@@ -48,7 +48,7 @@ export default function Footer() {
 
       {/* Bottom portion of the footer: copyright */}
       <FooterBottomSection
-        companyName={process.env.NEXT_PUBLIC_COMPANY_NAME || process.env.SITE_NAME || ""}
+        companyName={process.env.NEXT_PUBLIC_COMPANY_NAME || ""}
         displayYear={new Date().getFullYear()}
       />
     </footer>
