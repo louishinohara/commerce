@@ -12,12 +12,13 @@ import { Image } from 'lib/shopify/types';
 import Link from 'next/link';
 import { Suspense } from 'react';
 
-export async function generateMetadata(props: {
-  params: Promise<{ handle: string }>;
-}): Promise<Metadata> {
-  const params = await props.params;
-  const product = await getProduct(params.handle);
+// 1) Force Next.js to render dynamically instead of generating a static .html file
+export const dynamic = 'force-dynamic';
 
+export async function generateMetadata(
+  { params }: { params: { handle: string } }
+): Promise<Metadata> {
+  const product = await getProduct(params.handle);
   if (!product) return notFound();
 
   const { url, width, height, altText: alt } = product.featuredImage || {};
@@ -49,10 +50,10 @@ export async function generateMetadata(props: {
   };
 }
 
-export default async function ProductPage(props: { params: Promise<{ handle: string }> }) {
-  const params = await props.params;
+export default async function ProductPage(
+  { params }: { params: { handle: string } }
+) {
   const product = await getProduct(params.handle);
-
   if (!product) return notFound();
 
   const productJsonLd = {
@@ -112,7 +113,6 @@ export default async function ProductPage(props: { params: Promise<{ handle: str
 
 async function RelatedProducts({ id }: { id: string }) {
   const relatedProducts = await getProductRecommendations(id);
-
   if (!relatedProducts.length) return null;
 
   return (
