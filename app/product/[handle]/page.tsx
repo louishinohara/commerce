@@ -12,13 +12,21 @@ import { Image } from 'lib/shopify/types';
 import Link from 'next/link';
 import { Suspense } from 'react';
 
-// 1) Force Next.js to render dynamically instead of generating a static .html file
+/** 
+ * Mark page as dynamic so Next.js doesn't look for a static .html file 
+ */
 export const dynamic = 'force-dynamic';
 
-export async function generateMetadata(
-  { params }: { params: { handle: string } }
-): Promise<Metadata> {
-  const product = await getProduct(params.handle);
+/** 
+ * Await the promise-based params before using them. 
+ */
+export async function generateMetadata(props: {
+  params: Promise<{ handle: string }>;
+}): Promise<Metadata> {
+  // 1) Await the promise
+  const { handle } = await props.params;
+
+  const product = await getProduct(handle);
   if (!product) return notFound();
 
   const { url, width, height, altText: alt } = product.featuredImage || {};
@@ -50,10 +58,16 @@ export async function generateMetadata(
   };
 }
 
-export default async function ProductPage(
-  { params }: { params: { handle: string } }
-) {
-  const product = await getProduct(params.handle);
+/**
+ * Await the promise-based params before using them.
+ */
+export default async function ProductPage(props: {
+  params: Promise<{ handle: string }>;
+}) {
+  // 1) Await the promise
+  const { handle } = await props.params;
+
+  const product = await getProduct(handle);
   if (!product) return notFound();
 
   const productJsonLd = {
@@ -61,7 +75,7 @@ export default async function ProductPage(
     '@type': 'Product',
     name: product.title,
     description: product.description,
-    image: product.featuredImage.url,
+    image: product.featuredImage?.url,
     offers: {
       '@type': 'AggregateOffer',
       availability: product.availableForSale
