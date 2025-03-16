@@ -6,28 +6,53 @@ import { useFormStatus } from "react-dom";
 import { redirectToCheckout } from "../actions/actions";
 import CartItem from "./CartItem";
 
-// Glow animation with visible intensity
+interface CartLine {
+  merchandise: {
+    product: {
+      title: string;
+    };
+  };
+  // add more fields as needed
+}
+
+interface CartData {
+  lines: CartLine[];
+  cost: {
+    totalAmount: {
+      amount: string;
+      currencyCode: string;
+    };
+  };
+  // etc.
+}
+
 const glowAnimation = keyframes`
   0% { box-shadow: 0 0 4px rgba(255, 200, 100, 0.4); }
   50% { box-shadow: 0 0 18px rgba(255, 200, 100, 0.9); }
   100% { box-shadow: 0 0 4px rgba(255, 200, 100, 0.4); }
 `;
 
-export default function CartContents({ cart, toggleCart }: { cart: any; toggleCart: () => void }) {
+export default function CartContents({
+  cart,
+  toggleCart,
+}: {
+  cart: CartData;
+  toggleCart: () => void;
+}) {
   const { pending } = useFormStatus();
 
   return (
     <div className="flex h-full flex-col justify-between overflow-hidden">
-      {/* Cart Items */}
       <ul className="grow overflow-auto">
-        {cart?.lines
-          .sort((a, b) => a.merchandise.product.title.localeCompare(b.merchandise.product.title))
+        {cart.lines
+          .sort((a, b) => 
+            a.merchandise.product.title.localeCompare(b.merchandise.product.title)
+          )
           .map((item, i) => (
             <CartItem toggleCart={toggleCart} key={i} item={item} />
           ))}
       </ul>
 
-      {/* Cart Summary - Minimalist Styling */}
       <div className="mt-4 px-4">
         <div className="flex items-center justify-between text-neutral-700 dark:text-neutral-300">
           <p className="text-2xl font-medium">Total</p>
@@ -37,7 +62,6 @@ export default function CartContents({ cart, toggleCart }: { cart: any; toggleCa
             currencyCode={cart.cost.totalAmount.currencyCode}
           />
         </div>
-
 
         <form action={redirectToCheckout} className="mt-4">
           <Button

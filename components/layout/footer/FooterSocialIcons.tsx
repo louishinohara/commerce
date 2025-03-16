@@ -1,9 +1,10 @@
 import { Box, IconButton } from "@mui/material";
+import React from "react";
 import { FaFacebookF, FaInstagram, FaTiktok } from "react-icons/fa6";
-import socialLinks from "../../../lib/data/socials/data.json"; // ✅ Updated import
+import socialLinks from "../../../lib/data/socials/data.json";
 
 // Map social names to MUI icons
-const iconMap: Record<string, JSX.Element> = {
+const iconMap: Record<string, React.ReactNode> = {
   Facebook: <FaFacebookF />,
   Instagram: <FaInstagram />,
   TikTok: <FaTiktok />

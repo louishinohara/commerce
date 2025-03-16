@@ -501,19 +501,24 @@ export async function revalidate(req: NextRequest): Promise<NextResponse> {
   return NextResponse.json({ status: 200, revalidated: true, now: Date.now() });
 }
 
-type Policy = {
+interface Policy {
+  id: string;
   title: string;
-  body: string;
   handle: string;
-};
+  body: string;
+}
 
-type PolicyResponse = {
-  shop: {
-    privacyPolicy?: Policy;
-    termsOfService?: Policy;
-    refundPolicy?: Policy;
+interface ShopPolicies {
+  privacyPolicy?: Policy;
+  termsOfService?: Policy;
+  refundPolicy?: Policy;
+}
+
+interface PolicyResponse {
+  data?: {
+    shop?: ShopPolicies;
   };
-};
+}
 
 export async function getPolicy(handle: string): Promise<Policy | undefined> {
   "use cache";
@@ -525,11 +530,11 @@ export async function getPolicy(handle: string): Promise<Policy | undefined> {
     variables: { handle } as ExtractVariables<PolicyResponse>, // Ensure variables are properly typed
   });
 
-  // Dynamically access the correct policy
+  // Ensure 'shop' exists in 'res.body.data' before accessing properties
   return (
-    res.body.shop.privacyPolicy ??
-    res.body.shop.termsOfService ??
-    res.body.shop.refundPolicy
+    res.body.data?.shop?.privacyPolicy ??
+    res.body.data?.shop?.termsOfService ??
+    res.body.data?.shop?.refundPolicy
   );
 }
 

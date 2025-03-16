@@ -1,21 +1,23 @@
 import Footer from "components/layout/footer/Footer";
 import Prose from "components/prose";
-import { getAllPolicies } from "lib/shopify"; // Only using this now
+import { getAllPolicies } from "lib/shopify";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 /**
  * Generates metadata for the policy page.
  */
-export async function generateMetadata(
-  context: { params: { policy: string } }
-): Promise<Metadata> {
-  const params = await Promise.resolve(context.params);
+export async function generateMetadata(props: {
+  params: Promise<{ policy: string }>;
+}): Promise<Metadata> {
+  // 1) Await the promise:
+  const { policy } = await props.params;
 
-  if (!params || !params.policy) return notFound();
+  if (!policy) return notFound();
 
+  // 2) Fetch your policies
   const policies = await getAllPolicies();
-  const page = policies.find((p) => p.handle === params.policy);
+  const page = policies.find((p) => p.handle === policy);
 
   if (!page) return notFound();
 
@@ -28,14 +30,20 @@ export async function generateMetadata(
   };
 }
 
-export default async function PolicyPage(
-  context: { params: { policy: string } }
-) {
-  const params = await Promise.resolve(context.params);
-  if (!params?.policy) return notFound();
+/**
+ * Renders the policy page.
+ */
+export default async function PolicyPage(props: {
+  params: Promise<{ policy: string }>;
+}) {
+  // 1) Await the promise:
+  const { policy } = await props.params;
 
+  if (!policy) return notFound();
+
+  // 2) Fetch your policies
   const policies = await getAllPolicies();
-  const page = policies.find((p) => p.handle === params.policy);
+  const page = policies.find((p) => p.handle === policy);
 
   if (!page) return notFound();
 
